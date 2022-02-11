@@ -18,6 +18,10 @@
 		66FB8F5F27B511C40021F20C /* DownloadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FB8F5E27B511C40021F20C /* DownloadsViewController.swift */; };
 		66FB8F6527B522520021F20C /* CollectionViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FB8F6427B522520021F20C /* CollectionViewTableViewCell.swift */; };
 		66FB8F6727B540C60021F20C /* HeroHeaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FB8F6627B540C60021F20C /* HeroHeaderUIView.swift */; };
+		66FB8F6927B59B900021F20C /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FB8F6827B59B900021F20C /* APICaller.swift */; };
+		66FB8F6B27B59C9B0021F20C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FB8F6A27B59C9B0021F20C /* Constants.swift */; };
+		66FB8F6E27B59FB50021F20C /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FB8F6D27B59FB50021F20C /* Movie.swift */; };
+		66FB8F7127B648F20021F20C /* MoviexError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FB8F7027B648F20021F20C /* MoviexError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +38,10 @@
 		66FB8F5E27B511C40021F20C /* DownloadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsViewController.swift; sourceTree = "<group>"; };
 		66FB8F6427B522520021F20C /* CollectionViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewTableViewCell.swift; sourceTree = "<group>"; };
 		66FB8F6627B540C60021F20C /* HeroHeaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroHeaderUIView.swift; sourceTree = "<group>"; };
+		66FB8F6827B59B900021F20C /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
+		66FB8F6A27B59C9B0021F20C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		66FB8F6D27B59FB50021F20C /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		66FB8F7027B648F20021F20C /* MoviexError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviexError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,13 +74,15 @@
 		66FB8F4227B50D490021F20C /* MovieX */ = {
 			isa = PBXGroup;
 			children = (
+				66FB8F6C27B59F9A0021F20C /* Managers */,
 				66FB8F6127B5211B0021F20C /* Models */,
 				66FB8F6227B521240021F20C /* Views */,
 				66FB8F6327B521380021F20C /* ViewModels */,
 				66FB8F5727B510DE0021F20C /* Controllers */,
+				66FB8F6F27B648A20021F20C /* Utilities */,
+				66FB8F4727B50D490021F20C /* MainTabBarViewController.swift */,
 				66FB8F4327B50D490021F20C /* AppDelegate.swift */,
 				66FB8F4527B50D490021F20C /* SceneDelegate.swift */,
-				66FB8F4727B50D490021F20C /* MainTabBarViewController.swift */,
 				66FB8F4C27B50D4C0021F20C /* Assets.xcassets */,
 				66FB8F4E27B50D4C0021F20C /* LaunchScreen.storyboard */,
 				66FB8F5127B50D4C0021F20C /* Info.plist */,
@@ -94,6 +104,7 @@
 		66FB8F6127B5211B0021F20C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				66FB8F6D27B59FB50021F20C /* Movie.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -112,6 +123,23 @@
 			children = (
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		66FB8F6C27B59F9A0021F20C /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				66FB8F6827B59B900021F20C /* APICaller.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		66FB8F6F27B648A20021F20C /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				66FB8F6A27B59C9B0021F20C /* Constants.swift */,
+				66FB8F7027B648F20021F20C /* MoviexError.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,8 +213,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				66FB8F5D27B511840021F20C /* SearchViewController.swift in Sources */,
+				66FB8F7127B648F20021F20C /* MoviexError.swift in Sources */,
+				66FB8F6B27B59C9B0021F20C /* Constants.swift in Sources */,
+				66FB8F6E27B59FB50021F20C /* Movie.swift in Sources */,
 				66FB8F4827B50D490021F20C /* MainTabBarViewController.swift in Sources */,
 				66FB8F6527B522520021F20C /* CollectionViewTableViewCell.swift in Sources */,
+				66FB8F6927B59B900021F20C /* APICaller.swift in Sources */,
 				66FB8F6727B540C60021F20C /* HeroHeaderUIView.swift in Sources */,
 				66FB8F5F27B511C40021F20C /* DownloadsViewController.swift in Sources */,
 				66FB8F4427B50D490021F20C /* AppDelegate.swift in Sources */,

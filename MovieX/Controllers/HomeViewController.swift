@@ -36,7 +36,19 @@ let  sectionTitles: [String] = ["Trending Movies","Popular",  "Trending TV", "Up
         configureNavBar()
         let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
         homeFeedTable.tableHeaderView = headerView
-       
+        
+        APICaller.shared.getTrendingMovies { result in
+            
+            switch result {
+           
+            case .success(let trendingArray):
+                print(trendingArray[0].original_title)
+         
+            case .failure(let error):
+                print(error.rawValue)
+            }
+        
+        }
     }
     
     override func viewDidLayoutSubviews() {

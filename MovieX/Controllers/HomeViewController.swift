@@ -11,17 +11,17 @@ class HomeViewController: UIViewController {
     
     //MARK: - Properties
     
-let  sectionTitles: [String] = ["Trending Movies","Popular",  "Trending TV", "Upcoming Movies", "Top Rated"]
+    let  sectionTitles: [String] = ["Trending Movies", "Trending TV", "Popular", "Upcoming Movies", "Top Rated"]
     
     
     private let homeFeedTable: UITableView = {
-       
+        
         let table = UITableView(frame: .zero, style: .grouped)
         table.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.identifier)
         return table
     }()
     
-
+    
     
     //MARK: - VC Life Cycle
     
@@ -37,18 +37,6 @@ let  sectionTitles: [String] = ["Trending Movies","Popular",  "Trending TV", "Up
         let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
         homeFeedTable.tableHeaderView = headerView
         
-        APICaller.shared.getTrendingMovies { result in
-            
-            switch result {
-           
-            case .success(let trendingArray):
-                print(trendingArray[0].original_title)
-         
-            case .failure(let error):
-                print(error.rawValue)
-            }
-        
-        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -67,12 +55,8 @@ let  sectionTitles: [String] = ["Trending Movies","Popular",  "Trending TV", "Up
         
     }
     
-    
-
-
 }
-
-//MARK: -  TablView Implementation
+//MARK: -  TableView Implementation
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -88,6 +72,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else {return}
         header.textLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        header.textLabel?.text = header.textLabel?.text?.capitalizeFirstLetter()
         header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20,
                                          y: header.bounds.origin.y,
                                          width: 100,
@@ -104,9 +89,91 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = homeFeedTable.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath) as? CollectionViewTableViewCell else {return UITableViewCell()}
+    
+        switch indexPath.section {
+        
+        case Sections.TrendingMovies.rawValue:
+          
+            APICaller.shared.fetchTitleData(with: Constants.trendingMoviesURL) { result in
+                switch result {
+
+                case .success(let trendingMovies):
+                    cell.configureCellTitles(with: trendingMovies)
+                    
+                case .failure(let error):
+                    print(error.rawValue)
+                }
+            }
+            
+            
+        case Sections.TrendingTv.rawValue:
+          
+            APICaller.shared.fetchTitleData(with: Constants.trendingTvURL) { result in
+                switch result {
+
+                case .success(let trendingTv):
+                    cell.configureCellTitles(with: trendingTv)
+
+                case .failure(let error):
+                    print(error.rawValue)
+                }
+            }
+            
+        case Sections.Popular.rawValue:
+           
+            APICaller.shared.fetchTitleData(with: Constants.popularMoviesURL) { result in
+                switch result {
+                    
+                case .success(let popularMovies):
+                    cell.configureCellTitles(with: popularMovies)
+                    
+                case .failure(let error):
+                    print(error.rawValue)
+                }
+            }
+       case Sections.UpcomingMovies.rawValue:
+            
+            APICaller.shared.fetchTitleData(with: Constants.upcomingMoviesURL) { result in
+                switch result {
+                    
+                case .success(let upcomingMovies):
+                    APICaller.shared.fetchTitleData(with: Constants.upcomingMoviesURL) { result in
+                        switch result {
+                            
+                        case .success(let upcomingMovies):
+                            cell.configureCellTitles(with: upcomingMovies)
+                            
+                        case .failure(let error):
+                            print(error.rawValue)
+                        }
+                    }
+                    
+                case .failure(let error):
+                    print(error.rawValue)
+                }
+            }
+        case Sections.TopRated.rawValue:
+           
+            APICaller.shared.fetchTitleData(with: Constants.topRatedMoviesURL) { result in
+                switch result {
+                    
+                case .success(let topRated):
+                    cell.configureCellTitles(with: topRated)
+                    
+                case .failure(let error):
+                    print(error.rawValue)
+                }
+            }
+        default:
+            break
+            
+        }
+        
+        
+        
         return cell
-                
-                
+        
+        
         
     }
     
@@ -123,9 +190,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let defaultOffset = view.safeAreaInsets.top
         let offset = scrollView.contentOffset.y + defaultOffset
         navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
-
+        
     }
     
     
     
 }
+

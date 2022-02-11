@@ -13,20 +13,16 @@ class CollectionViewTableViewCell: UITableViewCell {
     //MARK: - Properties
 
 static let identifier = "CollectionViewTableViewCell"
+   
+   private var titles:[Title] = [Title]()
     
     private let collectionView: UICollectionView = {
-    
-        
        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 140, height: 200)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(TitleCollectionViewCell.self, forCellWithReuseIdentifier: TitleCollectionViewCell.idintifier)
         return collectionView
-        
-        
-        
-        
     }()
     
     
@@ -56,19 +52,36 @@ static let identifier = "CollectionViewTableViewCell"
     }
     
 
+
+
+//MARK: - Helper methods
+
+func configureCellTitles(with titles:[Title]){
+    self.titles = titles
+    DispatchQueue.main.async {
+        self.collectionView.reloadData()
+    }
 }
+
+}
+//MARK: - CollectionView Implementation
 
 extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return titles.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = .green
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCollectionViewCell.idintifier, for: indexPath) as? TitleCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        if let posterURL = titles[indexPath.row].poster_path  {
+    
+        cell.configureImage(with: posterURL)
+        }
         return cell
         
     }

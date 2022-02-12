@@ -12,6 +12,8 @@ class APICaller {
    
     static let shared = APICaller()
     
+    private var cache = NSCache <NSString, UIImage>()
+    
     func fetchTitleData (with url: String, completion: @ escaping (Result<[Title], MoviexError>) -> Void) {
         
         guard let url = URL(string: url) else {
@@ -52,7 +54,12 @@ class APICaller {
         task.resume()
     }
     
-    func fetchTitleImage(url: String, completion: @escaping (Result<(UIImage), MoviexError>) -> Void ){
+    func fetchTitleImage(url: String, completion: @escaping (Result<UIImage, MoviexError>) -> Void ){
+        
+        if let cachedImage = cache.object(forKey: url as NSString) {
+            completion(.success(cachedImage))
+            return
+        }
         
         guard let ImageUrl = URL(string: url) else {
             DispatchQueue.main.async {
@@ -73,7 +80,6 @@ class APICaller {
                 DispatchQueue.main.async {
                     completion(.failure(.invalidData))
                 }
-                
                 return }
             guard let pokemonImage = UIImage(data: ImageData) else {
                 DispatchQueue.main.async {
@@ -81,7 +87,7 @@ class APICaller {
                 }
                
                 return }
-            
+            self.cache.setObject(pokemonImage, forKey: url as NSString)
             DispatchQueue.main.async {
                 completion(.success(pokemonImage))
             }

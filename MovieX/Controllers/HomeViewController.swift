@@ -13,9 +13,7 @@ class HomeViewController: UIViewController {
     
     let  sectionTitles: [String] = ["Trending Movies", "Trending TV", "Popular", "Upcoming Movies", "Top Rated"]
     
-    
     private let homeFeedTable: UITableView = {
-        
         let table = UITableView(frame: .zero, style: .grouped)
         table.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.identifier)
         return table

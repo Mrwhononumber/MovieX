@@ -9,19 +9,22 @@ import UIKit
 
 class TitleCollectionViewCell: UICollectionViewCell {
     
+    //MARK: - Properties
+    
     static let idintifier = "TitleCollectionViewCell"
   
     private let posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
+    
+    //MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(posterImageView)
-        
-        
     }
     
     required init?(coder: NSCoder) {
@@ -32,6 +35,8 @@ class TitleCollectionViewCell: UICollectionViewCell {
         posterImageView.frame = contentView.bounds
     }
     
+    //MARK: - Helper Methods
+    
     func configureImage(with url: String) {
        let ImageURL = Constants.imageBaseURL+url
         APICaller.shared.fetchTitleImage(url: ImageURL) { result in
@@ -41,7 +46,6 @@ class TitleCollectionViewCell: UICollectionViewCell {
                 
             case .failure(let error):
                 print (error.rawValue)
-                
             }
         }
     }

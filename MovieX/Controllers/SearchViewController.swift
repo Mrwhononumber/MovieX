@@ -19,6 +19,13 @@ class SearchViewController: UIViewController {
         return table
     }()
     
+    private let searchController: UISearchController = {
+        let controller = UISearchController(searchResultsController: SearchResultsViewController())
+        controller.searchBar.placeholder = "Search for a movie or TV show"
+        controller.searchBar.searchBarStyle = .minimal
+        return controller
+    }()
+    
     //MARK: - VC life cycle
     
     override func viewDidLoad() {
@@ -26,6 +33,7 @@ class SearchViewController: UIViewController {
         configureUI()
         setupDiscoverTable()
         fetchTitles()
+        setupSearchController()
     }
     
     override func viewDidLayoutSubviews() {
@@ -37,9 +45,21 @@ class SearchViewController: UIViewController {
     
     func configureUI(){
         title = "Search"
+        view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .always
-        view.backgroundColor = .systemBackground
+        navigationController?.navigationBar.tintColor = .white
+        navigationItem.searchController = searchController
+        view.addSubview(discoverTable)
+    }
+    
+    func setupDiscoverTable(){
+        discoverTable.delegate = self
+        discoverTable.dataSource = self
+    }
+    
+    func setupSearchController(){
+        searchController.searchResultsUpdater = self
     }
     
     func fetchTitles(){
@@ -61,12 +81,6 @@ class SearchViewController: UIViewController {
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
-    func setupDiscoverTable(){
-        discoverTable.delegate = self
-        discoverTable.dataSource = self
-        view.addSubview(discoverTable)
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return titles.count
     }
@@ -82,5 +96,33 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
+    }
+}
+
+extension SearchViewController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        let searchBar = searchController.searchBar
+        guard let query = searchBar.text,
+              !query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              query.trimmingCharacters(in: .whitespacesAndNewlines).count >= 3,
+              let resultController = searchController.searchResultsController as? SearchResultsViewController else {
+                  return
+              }
+        
+        APICaller.shared.searchWith(query: query, url: Constants.searchQueryBaseURL) { results in
+            switch results{
+            case .success(let fetchedSearchedTitles):
+                resultController.titles = fetchedSearchedTitles
+                DispatchQueue.main.async {
+                    resultController.searchResultsCollectionView.reloadData()
+                }
+               
+            case .failure(let error):
+                print (error)
+            }
+        }
+        
     }
 }

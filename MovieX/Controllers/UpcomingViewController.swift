@@ -19,8 +19,6 @@ class UpcomingViewController: UIViewController {
         return table
     }()
     
-
-    
     //MARK: - VC Life Cycle
     
     override func viewDidLoad() {
@@ -41,6 +39,12 @@ class UpcomingViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .always
         view.backgroundColor = .systemBackground
+        view.addSubview(upcomingTable)
+    }
+   
+    func setupUpcomingTable(){
+        upcomingTable.delegate = self
+        upcomingTable.dataSource = self
     }
     
     func fetchTitles(){
@@ -62,11 +66,7 @@ class UpcomingViewController: UIViewController {
 
 extension UpcomingViewController: UITableViewDelegate, UITableViewDataSource {
     
-    func setupUpcomingTable(){
-        view.addSubview(upcomingTable)
-        upcomingTable.delegate = self
-        upcomingTable.dataSource = self
-    }
+  
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return titles.count

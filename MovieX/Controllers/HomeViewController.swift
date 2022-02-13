@@ -11,7 +11,7 @@ class HomeViewController: UIViewController {
     
     //MARK: - Properties
     
-    let  sectionTitles: [String] = ["Trending Movies", "Trending TV", "Popular", "Upcoming Movies", "Top Rated"]
+    private let  sectionTitles: [String] = ["Trending Movies", "Trending TV", "Popular", "Upcoming Movies", "Top Rated"]
     
     private let homeFeedTable: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -90,7 +90,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
         switch indexPath.section {
         
-        case Sections.TrendingMovies.rawValue:
+        case HomeTableViewSections.TrendingMovies.rawValue:
           
             APICaller.shared.fetchTitleData(with: Constants.trendingMoviesURL) { result in
                 switch result {
@@ -104,7 +104,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             }
             
             
-        case Sections.TrendingTv.rawValue:
+        case HomeTableViewSections.TrendingTv.rawValue:
           
             APICaller.shared.fetchTitleData(with: Constants.trendingTvURL) { result in
                 switch result {
@@ -117,7 +117,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 }
             }
             
-        case Sections.Popular.rawValue:
+        case HomeTableViewSections.Popular.rawValue:
            
             APICaller.shared.fetchTitleData(with: Constants.popularMoviesURL) { result in
                 switch result {
@@ -129,7 +129,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                     print(error.rawValue)
                 }
             }
-       case Sections.UpcomingMovies.rawValue:
+       case HomeTableViewSections.UpcomingMovies.rawValue:
             
             APICaller.shared.fetchTitleData(with: Constants.upcomingMoviesURL) { result in
                 switch result {
@@ -150,7 +150,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                     print(error.rawValue)
                 }
             }
-        case Sections.TopRated.rawValue:
+        case HomeTableViewSections.TopRated.rawValue:
            
             APICaller.shared.fetchTitleData(with: Constants.topRatedMoviesURL) { result in
                 switch result {
@@ -164,15 +164,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             }
         default:
             break
-            
         }
-        
-        
-        
         return cell
         
         
-        
+    
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -11,7 +11,7 @@ class UpcomingViewController: UIViewController {
     
     //MARK: - Properties
     
-    var titles:[Title] = [Title]()
+    private var titles:[Title] = [Title]()
     
     private let upcomingTable: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
@@ -25,23 +25,9 @@ class UpcomingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .systemBackground
-       configureNavBar()
-       setupUpcomingTable()
-        APICaller.shared.fetchTitleData(with: Constants.upcomingMoviesURL) { result in
-            switch result{
-            case .success (let trending):
-                (self.titles = trending)
-                DispatchQueue.main.async {
-                    self.upcomingTable.reloadData()
-                }
-                
-            case .failure(let error):
-                break
-            }
-        }
-
+        configureUI()
+        setupUpcomingTable()
+        fetchTitles()
     }
     
     override func viewDidLayoutSubviews() {
@@ -50,14 +36,26 @@ class UpcomingViewController: UIViewController {
     
     //MARK: - Helper methods
     
-    func configureNavBar(){
+    func configureUI(){
         title = "Upcoming"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .always
+        view.backgroundColor = .systemBackground
     }
     
-    
-    
+    func fetchTitles(){
+        APICaller.shared.fetchTitleData(with: Constants.upcomingMoviesURL) { result in
+            switch result{
+            case .success (let trending):
+                (self.titles = trending)
+                DispatchQueue.main.async {
+                    self.upcomingTable.reloadData()
+                }
+            case .failure(let error):
+                break
+            }
+        }
+    }
 }
 
 //MARK: - TableView implementation
@@ -82,10 +80,6 @@ extension UpcomingViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140
+        return 150
     }
-    
-    
-    
-    
 }

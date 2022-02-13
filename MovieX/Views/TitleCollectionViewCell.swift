@@ -10,6 +10,7 @@ import UIKit
 class TitleCollectionViewCell: UICollectionViewCell {
     
     static let idintifier = "TitleCollectionViewCell"
+  
     private let posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -19,6 +20,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(posterImageView)
+        
         
     }
     
@@ -36,6 +38,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
             switch result {
             case .success(let downloadedImage):
                 self.posterImageView.image = downloadedImage
+                
             case .failure(let error):
                 print (error.rawValue)
                 

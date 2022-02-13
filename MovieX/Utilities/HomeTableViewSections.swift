@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Sections: Int {
+enum HomeTableViewSections: Int {
     
     case TrendingMovies = 0
     case TrendingTv = 1

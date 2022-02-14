@@ -60,22 +60,18 @@ class APICaller {
             completion(.success(cachedImage))
             return
         }
-        
         guard let ImageUrl = URL(string: url) else {
             DispatchQueue.main.async {
                 completion(.failure(.invalidURL))
             }
-            
             return }
         let task = URLSession.shared.dataTask(with: ImageUrl) { data, response, error in
             guard error == nil else {
                 DispatchQueue.main.async {
                     completion(.failure(.unableToComplete))
                 }
-               
                 return
             }
-            
             guard let ImageData = data else {
                 DispatchQueue.main.async {
                     completion(.failure(.invalidData))
@@ -85,15 +81,12 @@ class APICaller {
                 DispatchQueue.main.async {
                     completion(.failure(.invalidData))
                 }
-               
                 return }
             self.cache.setObject(pokemonImage, forKey: url as NSString)
             DispatchQueue.main.async {
                 completion(.success(pokemonImage))
             }
-            
         }
-        
         task.resume()
     }
 
@@ -101,7 +94,7 @@ class APICaller {
     func searchWith(query:String, url: String, completion: @ escaping (Result<[Title], MoviexError>) -> Void){
         
         guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {return}
-        guard let url = URL(string: url+query) else {
+        guard let url   = URL(string: url+query) else {
             DispatchQueue.main.async {
                 completion(.failure(.invalidURL))
             }
@@ -137,18 +130,50 @@ class APICaller {
             }
         }
         task.resume()
-        
-        
-        
-        
     }
     
+    func searchYoutubeWith(query:String, url: String, completion: @ escaping (Result<String, MoviexError>) -> Void){
+        
+        guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {return}
+        guard let url = URL(string: url+query) else {
+            DispatchQueue.main.async {
+                completion(.failure(.invalidURL))
+            }
+            return
+        }
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard error == nil else {
+                DispatchQueue.main.async {
+                    completion(.failure(.unableToComplete))
+                }
+                return
+            }
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                DispatchQueue.main.async {
+                    completion(.failure(.invalidResponse))
+                }
+                return
+            }
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    completion(.failure(.invalidData))
+                }
+                return
+            }
+            do {
+                let videoElement = try JSONDecoder().decode(YoutubeSearchResponse.self, from: data)
+                let videoID = videoElement.items[0].id.videoId
+                completion(.success(videoID))
+            } catch {
+                DispatchQueue.main.async {
+                    completion(.failure(.invalidData))
+                }
+                return
+            }
+        }
+        task.resume()
+    }
     
-    
-    
-    
-    
-    
-    
+
     
 }

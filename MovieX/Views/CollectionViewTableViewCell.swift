@@ -7,12 +7,19 @@
 
 import UIKit
 
+protocol CollectionViewTableViewCellDelegate: AnyObject {
+    
+    func CollectionViewTableViewCellDidGetTapped(_cell: CollectionViewTableViewCell, title: Title, videoID: String)
+}
+
 class CollectionViewTableViewCell: UITableViewCell {
     
     
     //MARK: - Properties
 
 static let identifier = "CollectionViewTableViewCell"
+       
+    weak var delegate: CollectionViewTableViewCellDelegate?
    
    private var titles:[Title] = [Title]()
     
@@ -21,16 +28,12 @@ static let identifier = "CollectionViewTableViewCell"
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 140, height: 200)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(TitleCollectionViewCell.self, forCellWithReuseIdentifier: TitleCollectionViewCell.idintifier)
         return collectionView
     }()
     
-    
-    
-    
-    
     //MARK: - Init
-    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -51,9 +54,6 @@ static let identifier = "CollectionViewTableViewCell"
         collectionView.frame = contentView.bounds
     }
     
-
-
-
 //MARK: - Helper methods
 
 func configureCellTitles(with titles:[Title]){
@@ -86,11 +86,18 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
         
     }
     
-    
-    
-    
-    
-    
-    
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let selectedTitle = titles[indexPath.row]
+        let selectedTitleName = selectedTitle.original_name ?? titles[indexPath.row].original_title ?? ""
+        
+        APICaller.shared.searchYoutubeWith(query: selectedTitleName+"trailer", url: Constants.youtubeSearchBaseURL) { results in
+            switch results {
+            case .success(let videoId):
+                self.delegate?.CollectionViewTableViewCellDidGetTapped(_cell: self, title: selectedTitle, videoID: videoId)
+            case .failure(let error):
+                print (error)
+            }
+        }
+    }
 }

@@ -14,8 +14,9 @@ class HomeViewController: UIViewController {
     private let  sectionTitles: [String] = ["Trending Movies", "Trending TV", "Popular", "Upcoming Movies", "Top Rated"]
     
     private let homeFeedTable: UITableView = {
-        let table = UITableView(frame: .zero, style: .grouped)
+        let table = UITableView(frame: .zero, style: .insetGrouped)
         table.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.identifier)
+        table.showsVerticalScrollIndicator = false
         return table
     }()
     
@@ -28,13 +29,15 @@ class HomeViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(homeFeedTable)
         
-        homeFeedTable.delegate = self
+        homeFeedTable.delegate   = self
         homeFeedTable.dataSource = self
         
         configureNavBar()
         let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
         homeFeedTable.tableHeaderView = headerView
         
+        
+   
     }
     
     override func viewDidLayoutSubviews() {
@@ -87,6 +90,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = homeFeedTable.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath) as? CollectionViewTableViewCell else {return UITableViewCell()}
+        cell.delegate = self
     
         switch indexPath.section {
         
@@ -184,10 +188,17 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let defaultOffset = view.safeAreaInsets.top
         let offset = scrollView.contentOffset.y + defaultOffset
         navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
-        
     }
-    
-    
-    
+}
+
+extension HomeViewController: CollectionViewTableViewCellDelegate {
+  
+    func CollectionViewTableViewCellDidGetTapped(_cell: CollectionViewTableViewCell, title: Title, videoID: String) {
+        DispatchQueue.main.async {
+            let vc = TitlePreviewViewController()
+            vc.configure(with: title, videoID: videoID)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
 }
 

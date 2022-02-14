@@ -14,7 +14,7 @@ class UpcomingViewController: UIViewController {
     private var titles:[Title] = [Title]()
     
     private let upcomingTable: UITableView = {
-        let table = UITableView(frame: .zero, style: .plain)
+        let table = UITableView(frame: .zero, style: .insetGrouped)
         table.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.idintifier)
         return table
     }()

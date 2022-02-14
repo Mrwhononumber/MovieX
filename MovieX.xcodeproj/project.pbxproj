@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		666DE55327B7D29C0015BDD8 /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666DE55227B7D29C0015BDD8 /* TitleTableViewCell.swift */; };
 		66C3476327B924590079DEA5 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C3476227B924590079DEA5 /* SearchResultsViewController.swift */; };
+		66C3476527B98D3B0079DEA5 /* YoutubeSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C3476427B98D3B0079DEA5 /* YoutubeSearchResponse.swift */; };
+		66C3476727BA4A8F0079DEA5 /* TitlePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C3476627BA4A8F0079DEA5 /* TitlePreviewViewController.swift */; };
 		66FB8F4427B50D490021F20C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FB8F4327B50D490021F20C /* AppDelegate.swift */; };
 		66FB8F4627B50D490021F20C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FB8F4527B50D490021F20C /* SceneDelegate.swift */; };
 		66FB8F4827B50D490021F20C /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FB8F4727B50D490021F20C /* MainTabBarViewController.swift */; };
@@ -32,6 +34,8 @@
 /* Begin PBXFileReference section */
 		666DE55227B7D29C0015BDD8 /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
 		66C3476227B924590079DEA5 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
+		66C3476427B98D3B0079DEA5 /* YoutubeSearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeSearchResponse.swift; sourceTree = "<group>"; };
+		66C3476627BA4A8F0079DEA5 /* TitlePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitlePreviewViewController.swift; sourceTree = "<group>"; };
 		66FB8F4027B50D490021F20C /* MovieX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66FB8F4327B50D490021F20C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		66FB8F4527B50D490021F20C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -108,6 +112,7 @@
 				66FB8F5C27B511840021F20C /* SearchViewController.swift */,
 				66C3476227B924590079DEA5 /* SearchResultsViewController.swift */,
 				66FB8F5E27B511C40021F20C /* DownloadsViewController.swift */,
+				66C3476627BA4A8F0079DEA5 /* TitlePreviewViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -116,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				66FB8F6D27B59FB50021F20C /* Title.swift */,
+				66C3476427B98D3B0079DEA5 /* YoutubeSearchResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -230,6 +236,7 @@
 				66FB8F5D27B511840021F20C /* SearchViewController.swift in Sources */,
 				66FB8F7927B6A26F0021F20C /* HomeTableViewSections.swift in Sources */,
 				66FB8F7127B648F20021F20C /* MoviexError.swift in Sources */,
+				66C3476527B98D3B0079DEA5 /* YoutubeSearchResponse.swift in Sources */,
 				66FB8F6B27B59C9B0021F20C /* Constants.swift in Sources */,
 				66FB8F6E27B59FB50021F20C /* Title.swift in Sources */,
 				666DE55327B7D29C0015BDD8 /* TitleTableViewCell.swift in Sources */,
@@ -238,6 +245,7 @@
 				66FB8F6527B522520021F20C /* CollectionViewTableViewCell.swift in Sources */,
 				66FB8F6927B59B900021F20C /* APICaller.swift in Sources */,
 				66FB8F6727B540C60021F20C /* HeroHeaderUIView.swift in Sources */,
+				66C3476727BA4A8F0079DEA5 /* TitlePreviewViewController.swift in Sources */,
 				66FB8F5F27B511C40021F20C /* DownloadsViewController.swift in Sources */,
 				66FB8F4427B50D490021F20C /* AppDelegate.swift in Sources */,
 				66FB8F4627B50D490021F20C /* SceneDelegate.swift in Sources */,

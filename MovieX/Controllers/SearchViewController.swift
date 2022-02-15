@@ -71,7 +71,7 @@ class SearchViewController: UIViewController {
                     self.discoverTable.reloadData()
                 }
             case .failure(let error):
-                break
+                print (error)
             }
         }
     }
@@ -97,6 +97,25 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let selectedTitle = titles[indexPath.row]
+        let previewVC = TitlePreviewViewController()
+        APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitle.original_title ?? selectedTitle.original_name ?? "", url: Constants.youtubeSearchBaseURL) { results in
+            switch results {
+                
+            case .success(let trailerID):
+                DispatchQueue.main.async {
+                    previewVC.configure(with: selectedTitle, videoID: trailerID)
+                }
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
+        navigationController?.pushViewController(previewVC, animated: true)
+    }
 }
 
 extension SearchViewController: UISearchResultsUpdating {
@@ -110,6 +129,7 @@ extension SearchViewController: UISearchResultsUpdating {
               let resultController = searchController.searchResultsController as? SearchResultsViewController else {
                   return
               }
+        resultController.delegate = self
         
         APICaller.shared.searchWith(query: query, url: Constants.searchQueryBaseURL) { results in
             switch results{
@@ -125,4 +145,24 @@ extension SearchViewController: UISearchResultsUpdating {
         }
         
     }
+}
+
+extension SearchViewController:SearchResultsViewControllerDelegate {
+    
+    
+    func SearchResultsViewControllerDidTapTitle(title: Title, videoID: String) {
+        
+        DispatchQueue.main.async {
+            let searchResultsVC = SearchResultsViewController()
+            let PreviewVC = TitlePreviewViewController()
+            PreviewVC.configure(with: title, videoID: videoID)
+            self.navigationController?.pushViewController(PreviewVC, animated: true)
+        }
+        
+        
+    }
+    
+    
+    
+    
 }

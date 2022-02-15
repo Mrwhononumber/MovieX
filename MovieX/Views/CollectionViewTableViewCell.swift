@@ -91,7 +91,7 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
         let selectedTitle = titles[indexPath.row]
         let selectedTitleName = selectedTitle.original_name ?? titles[indexPath.row].original_title ?? ""
         
-        APICaller.shared.searchYoutubeWith(query: selectedTitleName+"trailer", url: Constants.youtubeSearchBaseURL) { results in
+        APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitleName+"trailer", url: Constants.youtubeSearchBaseURL) { results in
             switch results {
             case .success(let videoId):
                 self.delegate?.CollectionViewTableViewCellDidGetTapped(_cell: self, title: selectedTitle, videoID: videoId)

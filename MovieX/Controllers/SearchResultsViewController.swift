@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol SearchResultsViewControllerDelegate:AnyObject{
+    func SearchResultsViewControllerDidTapTitle(title:Title, videoID:String)
+}
+
 class SearchResultsViewController: UIViewController {
     
     //MARK: - Properties
+    
+    weak var delegate: SearchResultsViewControllerDelegate?
     
     var titles:[Title] = [Title]()
     
@@ -63,8 +69,25 @@ extension SearchResultsViewController: UICollectionViewDelegate, UICollectionVie
                 return cell
     }
     
-    
-    
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        
+        let selectedTitle = titles[indexPath.row]
+        APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitle.original_name ?? selectedTitle.original_title ?? "", url: Constants.youtubeSearchBaseURL) { results in
+            switch results {
+            case .success(let trailerID):
+                self.delegate?.SearchResultsViewControllerDidTapTitle(title: selectedTitle, videoID: trailerID)
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        
+        
+        
+
+    }
     
 }
+

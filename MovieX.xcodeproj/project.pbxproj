@@ -91,7 +91,6 @@
 				66FB8F6C27B59F9A0021F20C /* Managers */,
 				66FB8F6127B5211B0021F20C /* Models */,
 				66FB8F6227B521240021F20C /* Views */,
-				66FB8F6327B521380021F20C /* ViewModels */,
 				66FB8F5727B510DE0021F20C /* Controllers */,
 				66FB8F6F27B648A20021F20C /* Utilities */,
 				66FB8F4327B50D490021F20C /* AppDelegate.swift */,
@@ -135,13 +134,6 @@
 				666DE55227B7D29C0015BDD8 /* TitleTableViewCell.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		66FB8F6327B521380021F20C /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		66FB8F6C27B59F9A0021F20C /* Managers */ = {

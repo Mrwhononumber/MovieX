@@ -132,7 +132,7 @@ class APICaller {
         task.resume()
     }
     
-    func searchYoutubeWith(query:String, url: String, completion: @ escaping (Result<String, MoviexError>) -> Void){
+    func getYoutubeTrailerIdWith(query:String, url: String, completion: @ escaping (Result<String, MoviexError>) -> Void){
         
         guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {return}
         guard let url = URL(string: url+query) else {

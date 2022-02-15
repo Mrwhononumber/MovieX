@@ -85,7 +85,20 @@ extension UpcomingViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        
+        let selectedTitle = titles[indexPath.row]
+        let previewVC = TitlePreviewViewController()
+        APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitle.original_title ?? selectedTitle.original_name ?? "", url: Constants.youtubeSearchBaseURL) { results in
+            switch results {
+                
+            case .success(let trailerID):
+                DispatchQueue.main.async {
+                    previewVC.configure(with: selectedTitle, videoID: trailerID)
+                }
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
+        navigationController?.pushViewController(previewVC, animated: true)
     }
 }

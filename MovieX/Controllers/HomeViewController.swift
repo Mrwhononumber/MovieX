@@ -214,9 +214,9 @@ extension HomeViewController: CollectionViewTableViewCellDelegate {
   
     func CollectionViewTableViewCellDidGetTapped(_cell: CollectionViewTableViewCell, title: Title, videoID: String) {
         DispatchQueue.main.async {
-            let vc = TitlePreviewViewController()
-            vc.configure(with: title, videoID: videoID)
-            self.navigationController?.pushViewController(vc, animated: true)
+            let previewVC = TitlePreviewViewController()
+            previewVC.configure(with: title, videoID: videoID)
+            self.navigationController?.pushViewController(previewVC, animated: true)
         }
     }
 }

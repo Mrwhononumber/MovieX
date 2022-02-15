@@ -11,7 +11,12 @@ class HomeViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let  sectionTitles: [String] = ["Trending Movies", "Trending TV", "Popular", "Upcoming Movies", "Top Rated"]
+    private let sectionTitles: [String]  = ["Trending Movies", "Trending TV", "Popular", "Upcoming Movies", "Top Rated"]
+     
+    private let headerView: HeroHeaderUIView = {
+        let header = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 450))
+        return header
+    }()
     
     private let homeFeedTable: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
@@ -33,10 +38,7 @@ class HomeViewController: UIViewController {
         homeFeedTable.dataSource = self
         
         configureNavBar()
-        let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
-        homeFeedTable.tableHeaderView = headerView
-        
-        
+        configureHeader()
    
     }
     
@@ -45,17 +47,40 @@ class HomeViewController: UIViewController {
         homeFeedTable.frame = view.bounds
     }
     
-    //MARK: - Helper Functions
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+    }
+    
+    //MARK: - Helper Methods
+    
     
     func configureNavBar() {
-        
         var appLogo = UIImage(named: "MoviexLogo")
         appLogo = appLogo?.withRenderingMode(.alwaysOriginal)
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: appLogo, style: .done, target: self, action: nil)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil)
-        
     }
     
+    func configureHeader(){
+        APICaller.shared.fetchTitleData(with: Constants.trendingMoviesURL) { results in
+            switch results {
+          
+            case .success(let fetchedRandomTitle):
+                DispatchQueue.main.async {
+                    guard let randomTitle = fetchedRandomTitle.randomElement() else {return}
+                    self.headerView.configure(with: randomTitle)
+                    self.homeFeedTable.tableHeaderView = self.headerView
+                }
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }
 //MARK: -  TableView Implementation
 
@@ -83,13 +108,13 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        
         return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = homeFeedTable.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath) as? CollectionViewTableViewCell else {return UITableViewCell()}
+      
         cell.delegate = self
     
         switch indexPath.section {
@@ -115,7 +140,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 
                 case .success(let trendingTv):
                     cell.configureCellTitles(with: trendingTv)
-
+                   
                 case .failure(let error):
                     print(error.rawValue)
                 }
@@ -135,10 +160,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             }
        case HomeTableViewSections.UpcomingMovies.rawValue:
             
-            APICaller.shared.fetchTitleData(with: Constants.upcomingMoviesURL) { result in
-                switch result {
-                    
-                case .success(let upcomingMovies):
                     APICaller.shared.fetchTitleData(with: Constants.upcomingMoviesURL) { result in
                         switch result {
                             
@@ -150,10 +171,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                         }
                     }
                     
-                case .failure(let error):
-                    print(error.rawValue)
-                }
-            }
         case HomeTableViewSections.TopRated.rawValue:
            
             APICaller.shared.fetchTitleData(with: Constants.topRatedMoviesURL) { result in
@@ -189,6 +206,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let offset = scrollView.contentOffset.y + defaultOffset
         navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
     }
+    
+
 }
 
 extension HomeViewController: CollectionViewTableViewCellDelegate {

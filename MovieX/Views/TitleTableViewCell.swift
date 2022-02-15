@@ -43,7 +43,7 @@ class TitleTableViewCell: UITableViewCell {
         contentView.addSubview(titlePoster)
         contentView.addSubview(titleLabel)
         contentView.addSubview(playTitleButton )
-        applyContraints()
+        configureContraints()
     }
     
     required init?(coder: NSCoder) {
@@ -52,7 +52,7 @@ class TitleTableViewCell: UITableViewCell {
     
     //MARK: - Helper functions
     
-    func applyContraints(){
+    func configureContraints(){
         
         let titlePosterConstraints = [
             titlePoster.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

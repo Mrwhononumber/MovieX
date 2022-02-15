@@ -27,7 +27,7 @@ class TitlePreviewViewController: UIViewController {
     private let titleOverview: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 18, weight: .medium)
+        label.font = .systemFont(ofSize: 16, weight: .medium)
         label.numberOfLines = 0
         return label
     }()
@@ -46,7 +46,13 @@ class TitlePreviewViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureConstraints()
+        
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+    }
+    
     
     //MARK: - Helper Methods
     
@@ -64,7 +70,7 @@ class TitlePreviewViewController: UIViewController {
             webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             webView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 2),
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 2),
-            webView.heightAnchor.constraint(equalToConstant: 250)
+            webView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/3.5)
         ]
         let titleLabelConstraints = [
             titleLabel.topAnchor.constraint(equalTo: webView.bottomAnchor, constant: 20),

@@ -9,11 +9,13 @@ import UIKit
 
 class HeroHeaderUIView: UIView {
     
-   private let imageView: UIImageView = {
-       let imageView = UIImageView()
+    //MARK: - Properties
+    
+    private let imageView: UIImageView = {
+        let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
         imageView.clipsToBounds = true
-        imageView.image = UIImage(named: "HeroImage")
+        imageView.contentMode = .scaleAspectFill
         return imageView
         
     }()
@@ -43,20 +45,15 @@ class HeroHeaderUIView: UIView {
         return button
     }()
     
+    //MARK: - Init
     
-    
-    
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(imageView)
         addGradient()
         addSubview(playButton)
         addSubview(downloadButton)
-        
         applyConstraints()
-        
-        
     }
     
     required init?(coder: NSCoder) {
@@ -68,6 +65,25 @@ class HeroHeaderUIView: UIView {
         imageView.frame = bounds
     }
     
+    //MARK: - Helper Methods
+    
+    
+    func configure(with title:Title){
+        guard let titleURL = title.poster_path else {return}
+        APICaller.shared.fetchTitleImage(url:Constants.imageBaseURL+titleURL) { results in
+            switch results {
+            case .success(let heroImage):
+                self.imageView.image = heroImage
+                
+            case .failure(let error):
+                print(error)
+            }
+            
+        }
+        
+        
+    }
+    
     private func addGradient() {
         let gradienLayer = CAGradientLayer()
         gradienLayer.colors = [
@@ -76,7 +92,6 @@ class HeroHeaderUIView: UIView {
         ]
         gradienLayer.frame = bounds
         layer.addSublayer(gradienLayer)
-        
     }
     
     func applyConstraints(){
@@ -93,10 +108,6 @@ class HeroHeaderUIView: UIView {
         ]
         
         NSLayoutConstraint.activate(playButtonConstraints)
-       
-        
-        
-        
     }
     
     

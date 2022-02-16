@@ -39,6 +39,8 @@ class HomeViewController: UIViewController {
         
         configureNavBar()
         configureHeader()
+        
+    
    
     }
     

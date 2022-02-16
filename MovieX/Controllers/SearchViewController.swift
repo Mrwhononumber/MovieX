@@ -33,7 +33,7 @@ class SearchViewController: UIViewController {
         configureUI()
         setupDiscoverTable()
         fetchTitles()
-        setupSearchController()
+        setupSearchController()        
     }
     
     override func viewDidLayoutSubviews() {
@@ -147,22 +147,16 @@ extension SearchViewController: UISearchResultsUpdating {
     }
 }
 
+//MARK: - searchResultsViewcontroller delegate implementation
+
 extension SearchViewController:SearchResultsViewControllerDelegate {
     
     
     func SearchResultsViewControllerDidTapTitle(title: Title, videoID: String) {
-        
         DispatchQueue.main.async {
-            let searchResultsVC = SearchResultsViewController()
             let PreviewVC = TitlePreviewViewController()
             PreviewVC.configure(with: title, videoID: videoID)
             self.navigationController?.pushViewController(PreviewVC, animated: true)
         }
-        
-        
     }
-    
-    
-    
-    
 }

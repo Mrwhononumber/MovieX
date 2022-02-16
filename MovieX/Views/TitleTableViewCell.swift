@@ -16,12 +16,14 @@ class TitleTableViewCell: UITableViewCell {
      let titleLabel:UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.clipsToBounds = true
         return label
     }()
     
     private let playTitleButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(systemName: "play.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
+        let image = UIImage(systemName: "play.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 25))
         button.setImage(image, for: .normal)
         button.tintColor = .systemPink
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +64,8 @@ class TitleTableViewCell: UITableViewCell {
         ]
         
         let titleLabelConstraints = [
-            titleLabel.leadingAnchor.constraint(equalTo: titlePoster.trailingAnchor, constant: 20),
+            titleLabel.leadingAnchor.constraint(equalTo: titlePoster.trailingAnchor, constant: 15),
+            titleLabel.trailingAnchor.constraint(equalTo: playTitleButton.leadingAnchor, constant: -8),
             titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ]
         

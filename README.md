@@ -1,10 +1,10 @@
 # MovieX - Netflix inspired movie tracking app! 
 Simple iOS application in Swift, experimenting multible technologies and frameworks
 
-<img src="https://github.com/Mrwhononumber/Images/blob/cfc0e9c394ca57acc0be89a4d4bf133498cc880e/MovieX/1.jpg" width="155">, <img src="https://github.com/Mrwhononumber/Images/blob/cfc0e9c394ca57acc0be89a4d4bf133498cc880e/MovieX/2.jpg" width="155">
+<img src="https://github.com/Mrwhononumber/Images/blob/cfc0e9c394ca57acc0be89a4d4bf133498cc880e/MovieX/1.jpg" width="155">, <img src="https://github.com/Mrwhononumber/Images/blob/cfc0e9c394ca57acc0be89a4d4bf133498cc880e/MovieX/2.jpg" width="155">, 
+<img src="https://github.com/Mrwhononumber/Images/blob/cfc0e9c394ca57acc0be89a4d4bf133498cc880e/MovieX/3.jpg" width="155">, <img src="https://github.com/Mrwhononumber/Images/blob/cfc0e9c394ca57acc0be89a4d4bf133498cc880e/MovieX/4.jpg" width="155">
 
-<img src="https://github.com/Mrwhononumber/Images/blob/cfc0e9c394ca57acc0be89a4d4bf133498cc880e/MovieX/3.jpg" width="155">
-<img src="https://github.com/Mrwhononumber/Images/blob/cfc0e9c394ca57acc0be89a4d4bf133498cc880e/MovieX/4.jpg" width="155">
+
 
 
 

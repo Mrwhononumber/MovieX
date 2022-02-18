@@ -9,6 +9,7 @@ Simple iOS application in Swift, experimenting multible technologies and framewo
 
 # Application Features
 
+
 * Easily view all the trending/popular/upcoming/top rated titles
 
 * Search for a specific movie or tv show
@@ -33,6 +34,8 @@ Simple iOS application in Swift, experimenting multible technologies and framewo
 * Youtube search API is used for fetching titles trailers
 
 * Networking has been done using Singelton class `APICaller`
+
+* Downloading and caching images has been done using `URLSession` and `NSCache`
 
 * Presisting titles has been done using Core data
 

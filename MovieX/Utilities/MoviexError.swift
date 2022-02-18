@@ -15,5 +15,5 @@ enum MoviexError: String, Error {
     case invalidData          = "The data received from the server is invalid, please try again"
     case dataSavingFailure    = "something went wrong while saving your data to the, please try again"
     case dataLoadingFailure   = "something went wrong while loading your saved data, please try again"
-    case dataDeletionFailure  = " something went wrong while deliting your data, please try again"
+    case dataDeletionFailure  = "something went wrong while deliting your data, please try again"
 }

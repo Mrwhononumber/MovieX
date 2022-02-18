@@ -31,40 +31,34 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        view.addSubview(homeFeedTable)
-        
-        homeFeedTable.delegate   = self
-        homeFeedTable.dataSource = self
-        
+        configurehomeFeedTableView()
         configureNavBar()
         configureHeader()
-        
-    
-   
+        configureUI()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         homeFeedTable.frame = view.bounds
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-    }
-    
+        
     //MARK: - Helper Methods
     
+    func configureUI(){
+        view.backgroundColor = .systemBackground
+        view.addSubview(homeFeedTable)
+    }
     
     func configureNavBar() {
         var appLogo = UIImage(named: "MoviexLogo")
         appLogo = appLogo?.withRenderingMode(.alwaysOriginal)
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: appLogo, style: .done, target: self, action: nil)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil)
+    }
+    
+    func configurehomeFeedTableView(){
+        homeFeedTable.delegate   = self
+        homeFeedTable.dataSource = self
     }
     
     func configureHeader(){

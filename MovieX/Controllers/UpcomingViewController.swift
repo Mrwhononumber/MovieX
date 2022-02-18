@@ -23,8 +23,8 @@ class UpcomingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
         setupUpcomingTable()
+        configureUI()
         fetchTitles()
     }
     

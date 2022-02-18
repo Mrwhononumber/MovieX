@@ -25,15 +25,13 @@ class HomeViewController: UIViewController {
         return table
     }()
     
-    
-    
     //MARK: - VC Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configurehomeFeedTableView()
-        configureNavBar()
         configureHeader()
+        configureNavBar()
         configureUI()
     }
     

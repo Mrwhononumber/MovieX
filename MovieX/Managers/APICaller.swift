@@ -77,14 +77,14 @@ class APICaller {
                     completion(.failure(.invalidData))
                 }
                 return }
-            guard let pokemonImage = UIImage(data: ImageData) else {
+            guard let titleImage = UIImage(data: ImageData) else {
                 DispatchQueue.main.async {
                     completion(.failure(.invalidData))
                 }
                 return }
-            self.cache.setObject(pokemonImage, forKey: url as NSString)
+            self.cache.setObject(titleImage, forKey: url as NSString)
             DispatchQueue.main.async {
-                completion(.success(pokemonImage))
+                completion(.success(titleImage))
             }
         }
         task.resume()
@@ -173,7 +173,4 @@ class APICaller {
         }
         task.resume()
     }
-    
-
-    
 }

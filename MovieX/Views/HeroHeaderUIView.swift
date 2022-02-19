@@ -17,7 +17,6 @@ class HeroHeaderUIView: UIView {
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         return imageView
-        
     }()
     
     private let playButton: UIButton = {
@@ -28,9 +27,7 @@ class HeroHeaderUIView: UIView {
       button.layer.borderWidth = 1
       button.layer.cornerRadius = 5
       button.translatesAutoresizingMaskIntoConstraints = false
-        
         return button
-        
     }()
     
     private let downloadButton: UIButton = {
@@ -41,7 +38,6 @@ class HeroHeaderUIView: UIView {
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
         button.translatesAutoresizingMaskIntoConstraints = false
-        
         return button
     }()
     
@@ -49,11 +45,9 @@ class HeroHeaderUIView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(imageView)
         addGradient()
-        addSubview(playButton)
-        addSubview(downloadButton)
-        applyConstraints()
+        configureUI()
+        configureConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -67,21 +61,24 @@ class HeroHeaderUIView: UIView {
     
     //MARK: - Helper Methods
     
+    func configureUI(){
+        addSubview(imageView)
+        addSubview(playButton)
+        addSubview(downloadButton)
+    }
+    
     
     func configure(with title:Title){
         guard let titleURL = title.poster_path else {return}
-        APICaller.shared.fetchTitleImage(url:Constants.imageBaseURL+titleURL) { results in
+        APICaller.shared.fetchTitleImage(url:Constants.imageBaseURL+titleURL) {[weak self] results in
             switch results {
             case .success(let heroImage):
-                self.imageView.image = heroImage
+                self?.imageView.image = heroImage
                 
             case .failure(let error):
                 print(error)
             }
-            
         }
-        
-        
     }
     
     private func addGradient() {
@@ -94,22 +91,19 @@ class HeroHeaderUIView: UIView {
         layer.addSublayer(gradienLayer)
     }
     
-    func applyConstraints(){
+    func configureConstraints(){
        
-        let playButtonConstraints = [
-            // Play Button 
+        let playButtonConstraints     = [
             playButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 75),
             playButton.bottomAnchor.constraint(equalTo:  bottomAnchor, constant: -50),
-            playButton.widthAnchor.constraint(equalToConstant: 110),
-            // Download Button
+            playButton.widthAnchor.constraint(equalToConstant: 110)]
+        let downloadButtonConstraints = [
             downloadButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -75),
             downloadButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -50),
             downloadButton.widthAnchor.constraint(equalToConstant: 110)
         ]
         
         NSLayoutConstraint.activate(playButtonConstraints)
+        NSLayoutConstraint.activate(downloadButtonConstraints)
     }
-    
-    
-    
 }

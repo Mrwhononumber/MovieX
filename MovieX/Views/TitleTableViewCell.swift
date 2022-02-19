@@ -42,9 +42,7 @@ class TitleTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(titlePoster)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(playTitleButton )
+        configureUI()
         configureContraints()
     }
     
@@ -53,6 +51,12 @@ class TitleTableViewCell: UITableViewCell {
     }
     
     //MARK: - Helper functions
+    
+    func configureUI(){
+        contentView.addSubview(titlePoster)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(playTitleButton)
+    }
     
     func configureContraints(){
         
@@ -83,19 +87,15 @@ class TitleTableViewCell: UITableViewCell {
     func configure(with title:Title) {
         guard title.poster_path != nil else {return}
         let posterURL = Constants.imageBaseURL+title.poster_path!
-        APICaller.shared.fetchTitleImage(url: posterURL) { result in
+        APICaller.shared.fetchTitleImage(url: posterURL) { [weak self] result in
             switch result {
             case .success(let posterImage):
-                self.titlePoster.image = posterImage
+                self?.titlePoster.image = posterImage
             case .failure(let error):
                 print (error)
             }
         }
         
         self.titleLabel.text = title.original_title ?? title.original_name ?? "unknown"
-        
     }
-    
-    
-
 }

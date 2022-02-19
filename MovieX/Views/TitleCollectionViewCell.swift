@@ -24,7 +24,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.addSubview(posterImageView)
+        configureUI()
     }
     
     required init?(coder: NSCoder) {
@@ -37,12 +37,16 @@ class TitleCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Helper Methods
     
+    func configureUI(){
+        contentView.addSubview(posterImageView)
+    }
+    
     func configureImage(with url: String) {
        let ImageURL = Constants.imageBaseURL+url
-        APICaller.shared.fetchTitleImage(url: ImageURL) { result in
+        APICaller.shared.fetchTitleImage(url: ImageURL) { [weak self] result in
             switch result {
             case .success(let downloadedImage):
-                self.posterImageView.image = downloadedImage
+                self?.posterImageView.image = downloadedImage
                 
             case .failure(let error):
                 print (error.rawValue)

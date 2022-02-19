@@ -48,12 +48,12 @@ class UpcomingViewController: UIViewController {
     }
     
     func fetchTitles(){
-        APICaller.shared.fetchTitleData(with: Constants.upcomingMoviesURL) { result in
+        APICaller.shared.fetchTitleData(with: Constants.upcomingMoviesURL) { [weak self] result in
             switch result{
             case .success (let trending):
-                (self.titles = trending)
+                (self?.titles = trending)
                 DispatchQueue.main.async {
-                    self.upcomingTable.reloadData()
+                    self?.upcomingTable.reloadData()
                 }
             case .failure(let error):
                 print(error)
@@ -65,8 +65,6 @@ class UpcomingViewController: UIViewController {
 //MARK: - TableView implementation
 
 extension UpcomingViewController: UITableViewDelegate, UITableViewDataSource {
-    
-  
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return titles.count
@@ -101,6 +99,4 @@ extension UpcomingViewController: UITableViewDelegate, UITableViewDataSource {
         }
         navigationController?.pushViewController(previewVC, animated: true)
     }
-    
-    
 }

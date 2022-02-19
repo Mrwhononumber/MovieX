@@ -10,8 +10,6 @@ import Foundation
 struct MoviesModel: Codable {
     
     let results: [Title]
-    
-    
 }
 
 struct Title: Codable {
@@ -25,5 +23,4 @@ struct Title: Codable {
     let vote_count: Int?
     let release_date: String?
     let vote_average: Double?
-    
 }

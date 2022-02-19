@@ -17,9 +17,9 @@ class CollectionViewTableViewCell: UITableViewCell {
     
     //MARK: - Properties
 
-static let identifier = "CollectionViewTableViewCell"
+   static let identifier = "CollectionViewTableViewCell"
        
-    weak var delegate: CollectionViewTableViewCellDelegate?
+   weak var delegate: CollectionViewTableViewCellDelegate?
    
    private var titles:[Title] = [Title]()
     
@@ -37,12 +37,8 @@ static let identifier = "CollectionViewTableViewCell"
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        contentView.backgroundColor = .systemPink
-        contentView.addSubview(collectionView)
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        configureUI()
+        configureCollectionView()
     }
     
     required init?(coder: NSCoder) {
@@ -57,12 +53,20 @@ static let identifier = "CollectionViewTableViewCell"
 //MARK: - Helper methods
 
 func configureCellTitles(with titles:[Title]){
-    self.titles = titles
-    DispatchQueue.main.async {
-        self.collectionView.reloadData()
+    DispatchQueue.main.async { [weak self] in
+        self?.titles = titles
+        self?.collectionView.reloadData()
     }
 }
-
+    func configureUI(){
+        contentView.backgroundColor = .systemPink
+        contentView.addSubview(collectionView)
+    }
+    
+    func configureCollectionView(){
+        collectionView.delegate = self
+        collectionView.dataSource = self
+    }
 }
 //MARK: - CollectionView Implementation
 
@@ -91,10 +95,11 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
         let selectedTitle = titles[indexPath.row]
         let selectedTitleName = selectedTitle.original_name ?? titles[indexPath.row].original_title ?? ""
         
-        APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitleName+"trailer", url: Constants.youtubeSearchBaseURL) { results in
+        APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitleName+"trailer", url: Constants.youtubeSearchBaseURL) {[weak self] results in
             switch results {
             case .success(let videoId):
-                self.delegate?.CollectionViewTableViewCellDidGetTapped(_cell: self, title: selectedTitle, videoID: videoId)
+                guard let strongSelf = self else {return}
+                self?.delegate?.CollectionViewTableViewCellDidGetTapped(_cell: strongSelf, title: selectedTitle, videoID: videoId)
             case .failure(let error):
                 print (error)
             }

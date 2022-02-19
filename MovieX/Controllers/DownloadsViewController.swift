@@ -19,8 +19,6 @@ class DownloadsViewController: UIViewController {
         return table
     }()
 
-    
-    
     //MARK: - VC Life cycle
     
     override func viewDidLoad() {
@@ -32,6 +30,7 @@ class DownloadsViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         downloadsTable.frame = view.bounds
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         fetchStoredTitles()
@@ -54,11 +53,11 @@ class DownloadsViewController: UIViewController {
     }
     
     private func fetchStoredTitles() {
-        DataPersistenceMAnager.shared.loadStoredTitlesFromDataBase { results in
+        DataPersistenceMAnager.shared.loadStoredTitlesFromDataBase {[weak self] results in
             switch results {
             case .success(let storedTitles):
-                self.titles = storedTitles
-                self.downloadsTable.reloadData()
+                self?.titles = storedTitles
+                self?.downloadsTable.reloadData()
             case .failure(let error):
                 print (error)
             }

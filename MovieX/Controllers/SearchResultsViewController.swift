@@ -65,7 +65,6 @@ extension SearchResultsViewController: UICollectionViewDelegate, UICollectionVie
         let title = titles[indexPath.row]
         let titlePoster = title.poster_path ?? ""
         cell.configureImage(with: titlePoster)
-        
                 return cell
     }
     
@@ -73,21 +72,15 @@ extension SearchResultsViewController: UICollectionViewDelegate, UICollectionVie
         collectionView.deselectItem(at: indexPath, animated: true)
         
         let selectedTitle = titles[indexPath.row]
-        APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitle.original_name ?? selectedTitle.original_title ?? "", url: Constants.youtubeSearchBaseURL) { results in
+        APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitle.original_name ?? selectedTitle.original_title ?? "", url: Constants.youtubeSearchBaseURL) { [weak self] results in
             switch results {
             case .success(let trailerID):
-                self.delegate?.SearchResultsViewControllerDidTapTitle(title: selectedTitle, videoID: trailerID)
+                self?.delegate?.SearchResultsViewControllerDidTapTitle(title: selectedTitle, videoID: trailerID)
                 
             case .failure(let error):
                 print(error)
             }
         }
-        
-        
-        
-        
-
     }
-    
 }
 

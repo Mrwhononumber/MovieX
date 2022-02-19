@@ -29,7 +29,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configurehomeFeedTableView()
+        configureHomeFeedTableView()
         configureHeader()
         configureNavBar()
         configureUI()
@@ -54,20 +54,20 @@ class HomeViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil)
     }
     
-    func configurehomeFeedTableView(){
+    func configureHomeFeedTableView(){
         homeFeedTable.delegate   = self
         homeFeedTable.dataSource = self
     }
     
     func configureHeader(){
-        APICaller.shared.fetchTitleData(with: Constants.trendingMoviesURL) { results in
+        APICaller.shared.fetchTitleData(with: Constants.trendingMoviesURL) {[weak self] results in
             switch results {
           
             case .success(let fetchedRandomTitle):
                 DispatchQueue.main.async {
                     guard let randomTitle = fetchedRandomTitle.randomElement() else {return}
-                    self.headerView.configure(with: randomTitle)
-                    self.homeFeedTable.tableHeaderView = self.headerView
+                    self?.headerView.configure(with: randomTitle)
+                    self?.homeFeedTable.tableHeaderView = self?.headerView
                 }
                 
             case .failure(let error):
@@ -207,10 +207,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 extension HomeViewController: CollectionViewTableViewCellDelegate {
   
     func CollectionViewTableViewCellDidGetTapped(_cell: CollectionViewTableViewCell, title: Title, videoID: String) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async {[weak self] in
             let previewVC = TitlePreviewViewController()
             previewVC.configure(with: title, videoID: videoID)
-            self.navigationController?.pushViewController(previewVC, animated: true)
+            self?.navigationController?.pushViewController(previewVC, animated: true)
         }
     }
 }

@@ -63,12 +63,12 @@ class SearchViewController: UIViewController {
     }
     
     func fetchTitles(){
-        APICaller.shared.fetchTitleData(with: Constants.discoverMoviesURL) { result in
+        APICaller.shared.fetchTitleData(with: Constants.discoverMoviesURL) { [weak self] result in
             switch result{
             case .success (let discoverTitles):
-                (self.titles = discoverTitles)
+                (self?.titles = discoverTitles)
                 DispatchQueue.main.async {
-                    self.discoverTable.reloadData()
+                    self?.discoverTable.reloadData()
                 }
             case .failure(let error):
                 print (error)
@@ -143,7 +143,6 @@ extension SearchViewController: UISearchResultsUpdating {
                 print (error)
             }
         }
-        
     }
 }
 
@@ -153,10 +152,10 @@ extension SearchViewController:SearchResultsViewControllerDelegate {
     
     
     func SearchResultsViewControllerDidTapTitle(title: Title, videoID: String) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async {[weak self] in
             let PreviewVC = TitlePreviewViewController()
             PreviewVC.configure(with: title, videoID: videoID)
-            self.navigationController?.pushViewController(PreviewVC, animated: true)
+            self?.navigationController?.pushViewController(PreviewVC, animated: true)
         }
     }
 }

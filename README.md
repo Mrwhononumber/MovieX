@@ -35,7 +35,7 @@ Simple iOS application in Swift, experimenting with multible technologies and fr
 
 * Used architecture is MVC
 
-* UI has been built programatically
+* UI has been built programatically uning UIKit
 
 * TMDB API is used for fetching titles
 

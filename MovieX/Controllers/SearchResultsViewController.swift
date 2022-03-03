@@ -78,6 +78,7 @@ extension SearchResultsViewController: UICollectionViewDelegate, UICollectionVie
                 self?.delegate?.SearchResultsViewControllerDidTapTitle(title: selectedTitle, videoID: trailerID)
                 
             case .failure(let error):
+                self?.delegate?.SearchResultsViewControllerDidTapTitle(title: selectedTitle, videoID: "")
                 print(error)
             }
         }

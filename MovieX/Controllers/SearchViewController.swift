@@ -111,6 +111,9 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
                 }
                 
             case .failure(let error):
+                DispatchQueue.main.async {
+                    previewVC.configure(with: selectedTitle, videoID: "")
+                }
                 print(error)
             }
         }

@@ -94,6 +94,7 @@ extension UpcomingViewController: UITableViewDelegate, UITableViewDataSource {
                 }
                 
             case .failure(let error):
+                previewVC.configure(with: selectedTitle, videoID: "")
                 print(error)
             }
         }

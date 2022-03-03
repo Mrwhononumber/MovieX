@@ -11,8 +11,12 @@ import WebKit
 class TitlePreviewViewController: UIViewController {
     
     //MARK: - Properties
-
+    
+    var downloadButtonShouldBeHidden = false
+    
     private var currentTitle:Title?
+  
+    private var downloadsVC = DownloadsViewController()
     
     private let webView: WKWebView = {
         let webView = WKWebView()
@@ -34,25 +38,30 @@ class TitlePreviewViewController: UIViewController {
         return label
     }()
     private let downloadButton: UIButton = {
-       let button = UIButton()
+        let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemPink
         button.setTitle("Download", for: .normal)
         button.setTitleColor(.white, for: .normal)
         return button
     }()
+    
     //MARK: - VC Life Cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         configureConstraints()
         configureButtonsActions()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        checkDownloadButton()
+    }
     
     //MARK: - Helper Methods
     
-    func configureUI(){
+   private func configureUI(){
         view.addSubview(webView)
         view.addSubview(titleLabel)
         view.addSubview(titleOverview)
@@ -60,12 +69,12 @@ class TitlePreviewViewController: UIViewController {
         view.backgroundColor = .systemBackground
     }
     
-    func configureConstraints(){
-       
+   private func configureConstraints(){
+        
         let webViewConstraints = [
             webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            webView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 2),
-            webView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 2),
+            webView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 1),
+            webView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -1),
             webView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/3.5)
         ]
         let titleLabelConstraints = [
@@ -83,7 +92,7 @@ class TitlePreviewViewController: UIViewController {
             downloadButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             downloadButton.widthAnchor.constraint(equalToConstant: 120)
         ]
-       
+        
         NSLayoutConstraint.activate(webViewConstraints)
         NSLayoutConstraint.activate(titleLabelConstraints)
         NSLayoutConstraint.activate(titleOverviewConstraints)
@@ -98,7 +107,7 @@ class TitlePreviewViewController: UIViewController {
         webView.load(URLRequest(url: trailerURL))
     }
     
-    func persistTitle(){
+   private func persistTitle(){
         guard let currentTitle = currentTitle else {return}
         DataPersistenceMAnager.shared.saveTitleToDataBaseWith(currentTitle) { results in
             switch results{
@@ -111,13 +120,22 @@ class TitlePreviewViewController: UIViewController {
         }
     }
     
+   private func checkDownloadButton(){
+        if downloadButtonShouldBeHidden {
+            downloadButton.isHidden = true
+        } else {
+            return
+        }
+    }
+    
     //MARK: - Buttons Actions
     
-    func configureButtonsActions(){
+   private func configureButtonsActions(){
         downloadButton.addTarget(self, action: #selector(downloadButtonAction), for: .touchUpInside)
     }
     
-    @objc func downloadButtonAction(){
+    @objc private func downloadButtonAction(){
         persistTitle()
     }
 }
+

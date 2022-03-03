@@ -10,7 +10,7 @@ import UIKit
 class DownloadsViewController: UIViewController {
     
     //MARK: - Properties
-    
+        
     private var titles: [StoredTitle] = [StoredTitle]()
     
     private let downloadsTable: UITableView = {
@@ -18,7 +18,7 @@ class DownloadsViewController: UIViewController {
         table.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.idintifier)
         return table
     }()
-
+    
     //MARK: - VC Life cycle
     
     override func viewDidLoad() {
@@ -34,12 +34,11 @@ class DownloadsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         fetchStoredTitles()
-        print("view will appear")
     }
     
     //MARK: - Helper functions
     
-    func configureUI(){
+    private func configureUI(){
         title = "Downloads"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .always
@@ -47,7 +46,7 @@ class DownloadsViewController: UIViewController {
         view.addSubview(downloadsTable)
     }
     
-    func setupDownloadsTable(){
+    private func setupDownloadsTable(){
         downloadsTable.delegate = self
         downloadsTable.dataSource = self
     }
@@ -69,7 +68,7 @@ class DownloadsViewController: UIViewController {
 
 extension DownloadsViewController: UITableViewDelegate, UITableViewDataSource {
     
-  
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return titles.count
@@ -90,7 +89,7 @@ extension DownloadsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         switch editingStyle {
         case .delete:
-          
+            
             let titleToDelete = titles[indexPath.row]
             DataPersistenceMAnager.shared.deleteStoredTitlefromDataBase(titleToDelete) { results in
                 switch results {
@@ -102,7 +101,7 @@ extension DownloadsViewController: UITableViewDelegate, UITableViewDataSource {
             }
             self.titles.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-
+            
         default:
             break
         }
@@ -125,6 +124,8 @@ extension DownloadsViewController: UITableViewDelegate, UITableViewDataSource {
                 print(error)
             }
         }
+        previewVC.downloadButtonShouldBeHidden = true
         navigationController?.pushViewController(previewVC, animated: true)
     }
 }
+

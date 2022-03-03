@@ -14,7 +14,7 @@ class SearchViewController: UIViewController {
     private var titles:[Title] = [Title]()
     
     private let discoverTable: UITableView = {
-        let table = UITableView(frame: .zero, style: .plain)
+        let table = UITableView(frame: .zero, style: .insetGrouped)
         table.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.idintifier)
         return table
     }()
@@ -134,16 +134,18 @@ extension SearchViewController: UISearchResultsUpdating {
               }
         resultController.delegate = self
         
-        APICaller.shared.searchWith(query: query, url: Constants.searchQueryBaseURL) { results in
-            switch results{
-            case .success(let fetchedSearchedTitles):
-                resultController.titles = fetchedSearchedTitles
-                DispatchQueue.main.async {
-                    resultController.searchResultsCollectionView.reloadData()
+        DispatchQueue.main.asyncAfter(deadline: .now()+1.5) {
+            APICaller.shared.searchWith(query: query, url: Constants.searchQueryBaseURL) { results in
+                switch results{
+                case .success(let fetchedSearchedTitles):
+                    resultController.titles = fetchedSearchedTitles
+                    DispatchQueue.main.async {
+                        resultController.searchResultsCollectionView.reloadData()
+                    }
+                   
+                case .failure(let error):
+                    print (error)
                 }
-               
-            case .failure(let error):
-                print (error)
             }
         }
     }

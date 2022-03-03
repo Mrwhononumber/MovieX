@@ -22,9 +22,7 @@ Simple iOS application in Swift, experimenting with multible technologies and fr
 
 * Search for a specific movie or tv show
 
-* View title over view
-
-* View title Youtube trailer
+* View title overview
 
 * View title Youtube trailer
 

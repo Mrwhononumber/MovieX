@@ -66,8 +66,10 @@ class HomeViewController: UIViewController {
             case .success(let fetchedRandomTitle):
                 DispatchQueue.main.async {
                     guard let randomTitle = fetchedRandomTitle.randomElement() else {return}
-                    self?.headerView.configure(with: randomTitle)
+                    self?.headerView.configureHeroView(with: randomTitle)
+                    self?.headerView.delegate = self
                     self?.homeFeedTable.tableHeaderView = self?.headerView
+                    
                 }
                 
             case .failure(let error):
@@ -204,6 +206,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 
 }
 
+//MARK: - CollectionView Cell Delegate
+
 extension HomeViewController: CollectionViewTableViewCellDelegate {
   
     func CollectionViewTableViewCellDidGetTapped(_cell: CollectionViewTableViewCell, title: Title, videoID: String) {
@@ -213,5 +217,22 @@ extension HomeViewController: CollectionViewTableViewCellDelegate {
                 self?.navigationController?.pushViewController(previewVC, animated: true)
         }
     }
+}
+
+//MARK: - HeroHeader Delegate
+
+extension HomeViewController: HeroHeaderUIViewDelegate {
+    func didTapTrailerButton(title: Title, videoID: String) {
+        let previewVC = TitlePreviewViewController()
+        previewVC.configure(with: title, videoID: videoID)
+        navigationController?.pushViewController(previewVC, animated: true)
+        print("Im here")
+    }
+    
+    
+    
+    
+    
+    
 }
 

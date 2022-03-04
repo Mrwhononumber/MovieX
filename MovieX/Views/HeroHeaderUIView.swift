@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol HeroHeaderUIViewDelegate: AnyObject {
+    func didTapTrailerButton(title:Title, videoID: String)
+    
+}
+
 class HeroHeaderUIView: UIView {
     
     //MARK: - Properties
@@ -15,14 +20,15 @@ class HeroHeaderUIView: UIView {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
         imageView.clipsToBounds = true
+        imageView.alpha = 0.8
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
-    private let playButton: UIButton = {
+    private let trailerButton: UIButton = {
         
        let button = UIButton()
-      button.setTitle("Play", for: .normal)
+      button.setTitle("Trailer", for: .normal)
       button.layer.borderColor = UIColor.white.cgColor
       button.layer.borderWidth = 1
       button.layer.cornerRadius = 5
@@ -30,16 +36,9 @@ class HeroHeaderUIView: UIView {
         return button
     }()
     
-    private let downloadButton: UIButton = {
-        
-        let button = UIButton()
-        button.setTitle("Download", for: .normal)
-        button.layer.borderColor = UIColor.white.cgColor
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 5
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    weak var delegate: HeroHeaderUIViewDelegate?
+    
+    private var HeroTitle: Title?
     
     //MARK: - Init
     
@@ -48,6 +47,7 @@ class HeroHeaderUIView: UIView {
         addGradient()
         configureUI()
         configureConstraints()
+        configureButtonsActions()
     }
     
     required init?(coder: NSCoder) {
@@ -63,13 +63,13 @@ class HeroHeaderUIView: UIView {
     
     func configureUI(){
         addSubview(imageView)
-        addSubview(playButton)
-        addSubview(downloadButton)
+        addSubview(trailerButton)
     }
     
     
-    func configure(with title:Title){
+    func configureHeroView(with title:Title){
         guard let titleURL = title.poster_path else {return}
+        HeroTitle = title
         APICaller.shared.fetchTitleImage(url:Constants.imageBaseURL+titleURL) {[weak self] results in
             switch results {
             case .success(let heroImage):
@@ -94,16 +94,34 @@ class HeroHeaderUIView: UIView {
     func configureConstraints(){
        
         let playButtonConstraints     = [
-            playButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 75),
-            playButton.bottomAnchor.constraint(equalTo:  bottomAnchor, constant: -50),
-            playButton.widthAnchor.constraint(equalToConstant: 110)]
-        let downloadButtonConstraints = [
-            downloadButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -75),
-            downloadButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -50),
-            downloadButton.widthAnchor.constraint(equalToConstant: 110)
-        ]
+            trailerButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            trailerButton.bottomAnchor.constraint(equalTo:  bottomAnchor, constant: -50),
+            trailerButton.widthAnchor.constraint(equalToConstant: 110)]
         
         NSLayoutConstraint.activate(playButtonConstraints)
-        NSLayoutConstraint.activate(downloadButtonConstraints)
+    }
+    
+    //MARK: - Buttons Actions
+    
+    private func configureButtonsActions(){
+        
+        trailerButton.addTarget(self, action: #selector(trailerButtonAction), for: .touchUpInside)
+    }
+    
+    @objc private func trailerButtonAction(){
+        print("clicked")
+        guard HeroTitle != nil else {return}
+        APICaller.shared.getYoutubeTrailerIdWith(query: HeroTitle?.original_name ?? HeroTitle?.original_title ?? "", url: Constants.youtubeSearchBaseURL) { [self] results  in
+            switch results {
+            case .success(let trailerID):
+                DispatchQueue.main.async {
+                    self.delegate?.didTapTrailerButton(title: self.HeroTitle!, videoID: trailerID)
+                }
+                
+            case .failure(let error):
+                self.delegate?.didTapTrailerButton(title: self.HeroTitle!, videoID: "")
+                print(error)
+            }
+        }
     }
 }

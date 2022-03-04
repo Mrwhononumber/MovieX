@@ -20,7 +20,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let imageIndicatorView: UIActivityIndicatorView = {
+    private let activityIndicatorView: UIActivityIndicatorView = {
         let myView = UIActivityIndicatorView()
         myView.hidesWhenStopped = true
         myView.style = .medium
@@ -42,14 +42,14 @@ class TitleCollectionViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         posterImageView.frame = contentView.bounds
-        imageIndicatorView.center = contentView.center
+        activityIndicatorView.center = contentView.center
     }
     
     //MARK: - Helper Methods
     
-    func configureUI(){
+   private func configureUI(){
         contentView.addSubview(posterImageView)
-        posterImageView.addSubview(imageIndicatorView)
+        posterImageView.addSubview(activityIndicatorView)
     }
     
     func configureImage(with url: String) {
@@ -59,8 +59,8 @@ class TitleCollectionViewCell: UICollectionViewCell {
             case .success(let downloadedImage):
                 self?.posterImageView.alpha = 0
                 self?.posterImageView.image = downloadedImage
-                self!.fadeImageIn(source: self!.posterImageView, duration: 0.5)
-                self?.imageIndicatorView.stopAnimating()
+                self!.animateImageToFadeIn(source: self!.posterImageView, duration: 0.5)
+                self?.activityIndicatorView.stopAnimating()
                 
             case .failure(let error):
                 print (error.rawValue)
@@ -68,7 +68,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func fadeImageIn(source: UIView, duration: TimeInterval){
+   private func animateImageToFadeIn(source: UIView, duration: TimeInterval){
         UIView.animate(withDuration: duration) {
             self.posterImageView.alpha = 1
         }

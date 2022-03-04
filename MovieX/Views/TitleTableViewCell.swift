@@ -13,7 +13,7 @@ class TitleTableViewCell: UITableViewCell {
     
     static let idintifier = "TitleTableViewCell"
  
-     let titleLabel:UILabel = {
+    private let titleLabel:UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -38,6 +38,15 @@ class TitleTableViewCell: UITableViewCell {
         return poster
     }()
     
+    private let activityIndicatorView: UIActivityIndicatorView = {
+        let myView = UIActivityIndicatorView()
+        myView.hidesWhenStopped = true
+        myView.style = .medium
+        myView.color = .systemPink
+        myView.startAnimating()
+        return myView
+    }()
+    
   //MARK: - Init
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -50,15 +59,21 @@ class TitleTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        activityIndicatorView.center = titlePoster.center
+    }
+    
     //MARK: - Helper functions
     
-    func configureUI(){
+   private func configureUI(){
         contentView.addSubview(titlePoster)
         contentView.addSubview(titleLabel)
         contentView.addSubview(playTitleButton)
+        titlePoster.addSubview(activityIndicatorView)
     }
     
-    func configureContraints(){
+   private func configureContraints(){
         
         let titlePosterConstraints = [
             titlePoster.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -90,7 +105,10 @@ class TitleTableViewCell: UITableViewCell {
         APICaller.shared.fetchTitleImage(url: posterURL) { [weak self] result in
             switch result {
             case .success(let posterImage):
+                self?.titlePoster.alpha = 0
                 self?.titlePoster.image = posterImage
+                self!.animateImageToFadeIn(source: self!.titlePoster, duration: 0.5)
+                self?.activityIndicatorView.stopAnimating()
             case .failure(let error):
                 print (error)
             }
@@ -98,4 +116,10 @@ class TitleTableViewCell: UITableViewCell {
         
         self.titleLabel.text = title.original_title ?? title.original_name ?? "unknown"
     }
+    
+    private func animateImageToFadeIn(source: UIView, duration: TimeInterval){
+         UIView.animate(withDuration: duration) {
+             self.titlePoster.alpha = 1
+         }
+     }
 }

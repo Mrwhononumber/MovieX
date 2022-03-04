@@ -16,7 +16,7 @@ class HeroHeaderUIView: UIView {
     
     //MARK: - Properties
     
-    private let imageView: UIImageView = {
+    private let heroImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
         imageView.clipsToBounds = true
@@ -44,10 +44,10 @@ class HeroHeaderUIView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addGradient()
         configureUI()
         configureConstraints()
         configureButtonsActions()
+        addGradient()
     }
     
     required init?(coder: NSCoder) {
@@ -56,16 +56,15 @@ class HeroHeaderUIView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        imageView.frame = bounds
+        heroImageView.frame = bounds
     }
     
     //MARK: - Helper Methods
     
     func configureUI(){
-        addSubview(imageView)
+        addSubview(heroImageView)
         addSubview(trailerButton)
     }
-    
     
     func configureHeroView(with title:Title){
         guard let titleURL = title.poster_path else {return}
@@ -73,7 +72,7 @@ class HeroHeaderUIView: UIView {
         APICaller.shared.fetchTitleImage(url:Constants.imageBaseURL+titleURL) {[weak self] results in
             switch results {
             case .success(let heroImage):
-                self?.imageView.image = heroImage
+                self?.heroImageView.image = heroImage
                 
             case .failure(let error):
                 print(error)
@@ -82,13 +81,14 @@ class HeroHeaderUIView: UIView {
     }
     
     private func addGradient() {
-        let gradienLayer = CAGradientLayer()
-        gradienLayer.colors = [
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [
             UIColor.clear.cgColor,
             UIColor.systemBackground.cgColor
         ]
-        gradienLayer.frame = bounds
-        layer.addSublayer(gradienLayer)
+        gradientLayer.frame = bounds
+        heroImageView.layer.addSublayer(gradientLayer)
+//        layer.addSublayer(gradientLayer)
     }
     
     func configureConstraints(){
@@ -109,17 +109,16 @@ class HeroHeaderUIView: UIView {
     }
     
     @objc private func trailerButtonAction(){
-        print("clicked")
         guard HeroTitle != nil else {return}
-        APICaller.shared.getYoutubeTrailerIdWith(query: HeroTitle?.original_name ?? HeroTitle?.original_title ?? "", url: Constants.youtubeSearchBaseURL) { [self] results  in
+        APICaller.shared.getYoutubeTrailerIdWith(query: HeroTitle?.original_name ?? HeroTitle?.original_title ?? "", url: Constants.youtubeSearchBaseURL) { [weak self] results  in
             switch results {
             case .success(let trailerID):
                 DispatchQueue.main.async {
-                    self.delegate?.didTapTrailerButton(title: self.HeroTitle!, videoID: trailerID)
+                    self?.delegate?.didTapTrailerButton(title: (self?.HeroTitle!)!, videoID: trailerID)
                 }
                 
             case .failure(let error):
-                self.delegate?.didTapTrailerButton(title: self.HeroTitle!, videoID: "")
+                self?.delegate?.didTapTrailerButton(title: (self?.HeroTitle!)!, videoID: "")
                 print(error)
             }
         }

@@ -20,16 +20,7 @@ class TitleTableViewCell: UITableViewCell {
         label.clipsToBounds = true
         return label
     }()
-    
-    private let playTitleButton: UIButton = {
-        let button = UIButton()
-        let image = UIImage(systemName: "play.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 25))
-        button.setImage(image, for: .normal)
-        button.tintColor = .systemPink
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
+        
     private let titlePoster: UIImageView = {
         let poster = UIImageView()
         poster.translatesAutoresizingMaskIntoConstraints = false
@@ -69,7 +60,6 @@ class TitleTableViewCell: UITableViewCell {
    private func configureUI(){
         contentView.addSubview(titlePoster)
         contentView.addSubview(titleLabel)
-        contentView.addSubview(playTitleButton)
         titlePoster.addSubview(activityIndicatorView)
     }
     
@@ -84,18 +74,12 @@ class TitleTableViewCell: UITableViewCell {
         
         let titleLabelConstraints = [
             titleLabel.leadingAnchor.constraint(equalTo: titlePoster.trailingAnchor, constant: 15),
-            titleLabel.trailingAnchor.constraint(equalTo: playTitleButton.leadingAnchor, constant: -8),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
             titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
-        ]
-        
-        let playTitleButtonConstraints = [
-            playTitleButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            playTitleButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ]
         
         NSLayoutConstraint.activate(titlePosterConstraints)
         NSLayoutConstraint.activate(titleLabelConstraints)
-        NSLayoutConstraint.activate(playTitleButtonConstraints)
     }
     
     

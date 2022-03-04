@@ -226,13 +226,6 @@ extension HomeViewController: HeroHeaderUIViewDelegate {
         let previewVC = TitlePreviewViewController()
         previewVC.configure(with: title, videoID: videoID)
         navigationController?.pushViewController(previewVC, animated: true)
-        print("Im here")
     }
-    
-    
-    
-    
-    
-    
 }
 

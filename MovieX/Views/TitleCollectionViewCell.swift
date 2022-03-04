@@ -20,6 +20,15 @@ class TitleCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    private let imageIndicatorView: UIActivityIndicatorView = {
+        let myView = UIActivityIndicatorView()
+        myView.hidesWhenStopped = true
+        myView.style = .medium
+        myView.color = .systemPink
+        myView.startAnimating()
+        return myView
+    }()
+    
     //MARK: - Init
     
     override init(frame: CGRect) {
@@ -33,24 +42,35 @@ class TitleCollectionViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         posterImageView.frame = contentView.bounds
+        imageIndicatorView.center = contentView.center
     }
     
     //MARK: - Helper Methods
     
     func configureUI(){
         contentView.addSubview(posterImageView)
+        posterImageView.addSubview(imageIndicatorView)
     }
     
     func configureImage(with url: String) {
-       let ImageURL = Constants.imageBaseURL+url
+        let ImageURL = Constants.imageBaseURL+url
         APICaller.shared.fetchTitleImage(url: ImageURL) { [weak self] result in
             switch result {
             case .success(let downloadedImage):
+                self?.posterImageView.alpha = 0
                 self?.posterImageView.image = downloadedImage
+                self!.fadeImageIn(source: self!.posterImageView, duration: 0.5)
+                self?.imageIndicatorView.stopAnimating()
                 
             case .failure(let error):
                 print (error.rawValue)
             }
+        }
+    }
+    
+    func fadeImageIn(source: UIView, duration: TimeInterval){
+        UIView.animate(withDuration: duration) {
+            self.posterImageView.alpha = 1
         }
     }
 }

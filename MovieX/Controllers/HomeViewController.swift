@@ -210,9 +210,7 @@ extension HomeViewController: CollectionViewTableViewCellDelegate {
         DispatchQueue.main.async {[weak self] in
             let previewVC = TitlePreviewViewController()
             previewVC.configure(with: title, videoID: videoID)
-            DispatchQueue.main.async {
                 self?.navigationController?.pushViewController(previewVC, animated: true)
-            }
         }
     }
 }

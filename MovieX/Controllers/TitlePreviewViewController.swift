@@ -62,14 +62,6 @@ class TitlePreviewViewController: UIViewController {
         super.viewWillAppear(animated)
         checkDownloadButtonVisibility()
         checkIfTitleIsStoredWith(titleID: currentTitle?.id ?? 0)
-//        if DataPersistenceMAnager.shared.checkIfTitleIsStoredWith(currentTitle?.id ?? 0) {
-//            print ("SAVED")
-//            print (currentTitle?.id ?? "No IDr")
-//        } else {
-//            print("NOT SAVED")
-//            print (currentTitle?.id ?? "No IDr")
-//
-//        }
     }
     
     //MARK: - Helper Methods
@@ -150,6 +142,7 @@ class TitlePreviewViewController: UIViewController {
         
     private func updateDownloadButtonUI(){
         if titleIsStored {
+            downloadButton.performSpringAnimation()
             downloadButton.isEnabled = false
             downloadButton.layer.borderColor = UIColor.green.cgColor
             downloadButton.setTitle("Downloaded", for: .normal)

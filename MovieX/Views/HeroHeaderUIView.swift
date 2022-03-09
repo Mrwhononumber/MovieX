@@ -36,6 +36,15 @@ class HeroHeaderUIView: UIView {
         return button
     }()
     
+    private let activityIndicatorView: UIActivityIndicatorView = {
+        let myView = UIActivityIndicatorView()
+        myView.hidesWhenStopped = true
+        myView.style = .medium
+        myView.color = .systemPink
+        myView.startAnimating()
+        return myView
+    }()
+    
     weak var delegate: HeroHeaderUIViewDelegate?
     
     private var HeroTitle: Title?
@@ -57,6 +66,7 @@ class HeroHeaderUIView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         heroImageView.frame = bounds
+        activityIndicatorView.center = heroImageView.center
     }
     
     //MARK: - Helper Methods
@@ -64,6 +74,7 @@ class HeroHeaderUIView: UIView {
     func configureUI(){
         addSubview(heroImageView)
         addSubview(trailerButton)
+        addSubview(activityIndicatorView)
     }
     
     func configureHeroView(with title:Title){
@@ -73,6 +84,7 @@ class HeroHeaderUIView: UIView {
             switch results {
             case .success(let heroImage):
                 self?.heroImageView.image = heroImage
+                self?.activityIndicatorView.stopAnimating()
                 
             case .failure(let error):
                 print(error)

@@ -102,7 +102,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedTitle = titles[indexPath.row]
         let previewVC = TitlePreviewViewController()
-//        previewVC.currentTitle = selectedTitle
+        previewVC.currentTitle = selectedTitle
         APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitle.original_title ?? selectedTitle.original_name ?? "", url: Constants.youtubeSearchBaseURL) { results in
             switch results {
                 
@@ -134,7 +134,7 @@ extension SearchViewController: UISearchResultsUpdating {
                   return
               }
         resultController.delegate = self
-        
+ 
         DispatchQueue.main.asyncAfter(deadline: .now()+1) {
             APICaller.shared.searchWith(query: query, url: Constants.searchQueryBaseURL) { results in
                 switch results{

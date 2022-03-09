@@ -68,4 +68,28 @@ class DataPersistenceMAnager {
             completion(.failure(MoviexError.dataDeletionFailure))
         }
     }
+    
+    func checkIfTitleIsStoredWith(_ TitleId:Int) -> Bool {
+      
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate 
+        
+        let context = appDelegate!.persistentContainer.viewContext
+        
+        let request: NSFetchRequest<StoredTitle>
+        request = StoredTitle.fetchRequest()
+        request.fetchLimit = 1
+        request.predicate = NSPredicate(format: "id == %d" ,TitleId)
+        do {
+            let count = try context.count(for: request)
+            if count > 0{
+                                return true
+            } else {
+
+                return false
+            }
+        } catch {
+            print(MoviexError.dataRetrivingFailure)
+        }
+        return true
+    }
 }

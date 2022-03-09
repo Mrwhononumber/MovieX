@@ -42,6 +42,7 @@ class DownloadsViewController: UIViewController {
         title = "Downloads"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.tintColor = .white
         view.backgroundColor = .systemBackground
         view.addSubview(downloadsTable)
     }
@@ -112,6 +113,7 @@ extension DownloadsViewController: UITableViewDelegate, UITableViewDataSource {
         let selectedStoredTitle = titles[indexPath.row]
         let selectedTitle = Title(id: Int(selectedStoredTitle.id), media_type: selectedStoredTitle.media_type, original_name: selectedStoredTitle.original_name, original_title: selectedStoredTitle.original_title, poster_path: selectedStoredTitle.poster_path, overview: selectedStoredTitle.overview, vote_count: Int(selectedStoredTitle.vote_count), release_date: selectedStoredTitle.release_date, vote_average: selectedStoredTitle.vote_average)
         let previewVC = TitlePreviewViewController()
+        previewVC.currentTitle = selectedTitle
         APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitle.original_title ?? selectedTitle.original_name ?? "", url: Constants.youtubeSearchBaseURL) { results in
             switch results {
                 

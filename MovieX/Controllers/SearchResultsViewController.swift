@@ -42,12 +42,11 @@ class SearchResultsViewController: UIViewController {
     
     //MARK: - Helper Functions
 
-    func configureUI(){
-        view.backgroundColor = .systemBackground
+   private func configureUI(){
         view.addSubview(searchResultsCollectionView)
     }
     
-    func setupSearchResultCollectionView() {
+   private func setupSearchResultCollectionView() {
         searchResultsCollectionView.delegate = self
         searchResultsCollectionView.dataSource = self
     }

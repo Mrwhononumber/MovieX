@@ -14,7 +14,9 @@ class TitlePreviewViewController: UIViewController {
     
     var downloadButtonShouldBeHidden = false
     
-    private var currentTitle:Title?
+   private var titleIsStored = false
+    
+     var currentTitle:Title?
   
     private var downloadsVC = DownloadsViewController()
     
@@ -39,11 +41,12 @@ class TitlePreviewViewController: UIViewController {
     }()
     private let downloadButton: UIButton = {
         let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .systemPink
         button.setTitle("Download", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        return button
+       button.layer.borderColor = UIColor.white.cgColor
+       button.layer.borderWidth = 1
+       button.layer.cornerRadius = 5
+       button.translatesAutoresizingMaskIntoConstraints = false
+         return button
     }()
     
     //MARK: - VC Life Cycle
@@ -54,9 +57,19 @@ class TitlePreviewViewController: UIViewController {
         configureConstraints()
         configureButtonsActions()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        checkDownloadButton()
+        checkDownloadButtonVisibility()
+        checkIfTitleIsStoredWith(titleID: currentTitle?.id ?? 0)
+//        if DataPersistenceMAnager.shared.checkIfTitleIsStoredWith(currentTitle?.id ?? 0) {
+//            print ("SAVED")
+//            print (currentTitle?.id ?? "No IDr")
+//        } else {
+//            print("NOT SAVED")
+//            print (currentTitle?.id ?? "No IDr")
+//
+//        }
     }
     
     //MARK: - Helper Methods
@@ -66,7 +79,7 @@ class TitlePreviewViewController: UIViewController {
         view.addSubview(titleLabel)
         view.addSubview(titleOverview)
         view.addSubview(downloadButton)
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .black
     }
     
    private func configureConstraints(){
@@ -120,13 +133,40 @@ class TitlePreviewViewController: UIViewController {
         }
     }
     
-   private func checkDownloadButton(){
-        if downloadButtonShouldBeHidden {
-            downloadButton.isHidden = true
+   private func checkIfTitleIsStoredWith(titleID:Int){
+        // Check if the title is stored already to handle the download button
+        if DataPersistenceMAnager.shared.checkIfTitleIsStoredWith(titleID) {
+            titleIsStored = true
+            updateDownloadButtonUI()
+            downloadButton.layer.borderColor = UIColor.green.cgColor
+            downloadButton.titleLabel?.text = "Downloaded"
         } else {
-            return
+            titleIsStored = false
+            updateDownloadButtonUI()
+            downloadButton.layer.borderColor = UIColor.white.cgColor
+            downloadButton.titleLabel?.text = "Download"
         }
     }
+        
+    private func updateDownloadButtonUI(){
+        if titleIsStored {
+            downloadButton.isEnabled = false
+            downloadButton.layer.borderColor = UIColor.green.cgColor
+            downloadButton.setTitle("Downloaded", for: .normal)
+        } else {
+            downloadButton.isEnabled = true
+            downloadButton.layer.borderColor = UIColor.white.cgColor
+            downloadButton.setTitle("Download", for: .normal)
+        }
+    }
+    
+    private func checkDownloadButtonVisibility(){
+         if downloadButtonShouldBeHidden {
+             downloadButton.isHidden = true
+         } else {
+             return
+         }
+     }
     
     //MARK: - Buttons Actions
     
@@ -136,6 +176,8 @@ class TitlePreviewViewController: UIViewController {
     
     @objc private func downloadButtonAction(){
         persistTitle()
+        titleIsStored = true
+        downloadButton.layer.borderColor = UIColor.green.cgColor
+        updateDownloadButtonUI()
     }
 }
-

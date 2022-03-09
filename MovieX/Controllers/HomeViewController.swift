@@ -42,24 +42,30 @@ class HomeViewController: UIViewController {
         
     //MARK: - Helper Methods
     
-    func configureUI(){
-        view.backgroundColor = .systemBackground
-        view.addSubview(homeFeedTable)
+   private func configureUI(){
+       navigationController?.navigationBar.tintColor = .white
+       navigationController?.navigationBar.alpha = 0.5
+       view.backgroundColor = .black
+       view.addSubview(homeFeedTable)
+       title = "MovieX"
     }
     
-    func configureNavBar() {
+   private func configureNavBar() {
         var appLogo = UIImage(named: "MoviexLogo")
         appLogo = appLogo?.withRenderingMode(.alwaysOriginal)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: appLogo, style: .done, target: self, action: nil)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil)
+       let logoButton = UIBarButtonItem(image: appLogo, style: .done, target: self, action: nil)
+       navigationItem.leftBarButtonItem = logoButton
+        let profileButton = UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil)
+       profileButton.tintColor = .white
+       navigationItem.rightBarButtonItem = profileButton
     }
     
-    func configureHomeFeedTableView(){
+   private func configureHomeFeedTableView(){
         homeFeedTable.delegate   = self
         homeFeedTable.dataSource = self
     }
     
-    func configureHeader(){
+   private func configureHeader(){
         APICaller.shared.fetchTitleData(with: Constants.trendingMoviesURL) {[weak self] results in
             switch results {
           
@@ -69,7 +75,6 @@ class HomeViewController: UIViewController {
                     self?.headerView.configureHeroView(with: randomTitle)
                     self?.headerView.delegate = self
                     self?.homeFeedTable.tableHeaderView = self?.headerView
-                    
                 }
                 
             case .failure(let error):
@@ -94,6 +99,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else {return}
         header.textLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        header.textLabel?.textColor = .white
         header.textLabel?.text = header.textLabel?.text?.capitalizeFirstLetter()
         header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20,
                                          y: header.bounds.origin.y,
@@ -183,7 +189,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             break
         }
         return cell
-        
         
     
     }

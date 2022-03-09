@@ -99,10 +99,14 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
             switch results {
             case .success(let videoId):
                 guard let strongSelf = self else {return}
-                self?.delegate?.CollectionViewTableViewCellDidGetTapped(_cell: strongSelf, title: selectedTitle, videoID: videoId)
+                DispatchQueue.main.async {
+                    self?.delegate?.CollectionViewTableViewCellDidGetTapped(_cell: strongSelf, title: selectedTitle, videoID: videoId)
+                }
             case .failure(let error):
                 guard let strongSelf = self else {return}
-                self?.delegate?.CollectionViewTableViewCellDidGetTapped(_cell: strongSelf, title: selectedTitle, videoID: "")
+                DispatchQueue.main.async {
+                    self?.delegate?.CollectionViewTableViewCellDidGetTapped(_cell: strongSelf, title: selectedTitle, videoID: "")
+                }
                 print (error)
             }
         }

@@ -43,7 +43,7 @@ Simple iOS application in Swift, experimenting with multible technologies and fr
 
 * Downloading and caching images has been done using `URLSession` and `NSCache`
 
-* Persisting titles has been done using Core data
+* Persisting titles has been done using Core Data
 
-* Core data has been implemented using Singelton class `DataPersistenceManager`
+* Core Data has been implemented using Singelton class `DataPersistenceManager`
 

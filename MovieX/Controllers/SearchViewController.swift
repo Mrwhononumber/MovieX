@@ -33,7 +33,7 @@ class SearchViewController: UIViewController {
         configureUI()
         setupDiscoverTable()
         fetchTitles()
-        setupSearchController()        
+        setupSearchController()
     }
     
     override func viewDidLayoutSubviews() {
@@ -103,44 +103,28 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         let selectedTitle = titles[indexPath.row]
         let previewVC = TitlePreviewViewController()
         previewVC.currentTitle = selectedTitle
-        APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitle.original_title ?? selectedTitle.original_name ?? "", url: Constants.youtubeSearchBaseURL) { results in
-            switch results {
-                
-            case .success(let trailerID):
-                DispatchQueue.main.async {
-                    previewVC.configure(with: selectedTitle, videoID: trailerID)
-                }
-                
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    previewVC.configure(with: selectedTitle, videoID: "")
-                }
-                print(error)
-            }
-        }
         navigationController?.pushViewController(previewVC, animated: true)
     }
 }
 
-extension SearchViewController: UISearchResultsUpdating {
-    
+extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
+
     func updateSearchResults(for searchController: UISearchController) {
         
         let searchBar = searchController.searchBar
         guard let query = searchBar.text,
               !query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
-              query.trimmingCharacters(in: .whitespacesAndNewlines).count >= 3,
+              query.trimmingCharacters(in: .whitespacesAndNewlines).count >= 2,
               let resultController = searchController.searchResultsController as? SearchResultsViewController else {
                   return
               }
         resultController.delegate = self
- 
-        DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+        DispatchQueue.main.asyncAfter(deadline: .now()+1.8) {
             APICaller.shared.searchWith(query: query, url: Constants.searchQueryBaseURL) { results in
                 switch results{
                 case .success(let fetchedSearchedTitles):
-                    resultController.titles = fetchedSearchedTitles
                     DispatchQueue.main.async {
+                        resultController.titles = fetchedSearchedTitles
                         resultController.searchResultsCollectionView.reloadData()
                     }
                    
@@ -157,12 +141,10 @@ extension SearchViewController: UISearchResultsUpdating {
 extension SearchViewController:SearchResultsViewControllerDelegate {
     
     
-    func SearchResultsViewControllerDidTapTitle(title: Title, videoID: String) {
-        DispatchQueue.main.async {[weak self] in
+    func SearchResultsViewControllerDidTapTitle(title: Title) {
+        
             let PreviewVC = TitlePreviewViewController()
             PreviewVC.currentTitle = title
-            PreviewVC.configure(with: title, videoID: videoID)
-            self?.navigationController?.pushViewController(PreviewVC, animated: true)
-        }
+            navigationController?.pushViewController(PreviewVC, animated: true)
     }
 }

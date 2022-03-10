@@ -25,6 +25,13 @@ class TitlePreviewViewController: UIViewController {
         webView.translatesAutoresizingMaskIntoConstraints = false
         return webView
     }()
+    
+    private let titlePoster: UIImageView = {
+       let poster = UIImageView()
+        poster.translatesAutoresizingMaskIntoConstraints = false
+        return poster
+    }()
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -56,6 +63,7 @@ class TitlePreviewViewController: UIViewController {
         configureUI()
         configureConstraints()
         configureButtonsActions()
+        configureTitlePreview()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,19 +105,41 @@ class TitlePreviewViewController: UIViewController {
             downloadButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             downloadButton.widthAnchor.constraint(equalToConstant: 120)
         ]
+        let titlePosterConstraints = [
+            webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            webView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 1),
+            webView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -1),
+            webView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/3.5)
+       ]
+       
         
         NSLayoutConstraint.activate(webViewConstraints)
         NSLayoutConstraint.activate(titleLabelConstraints)
         NSLayoutConstraint.activate(titleOverviewConstraints)
         NSLayoutConstraint.activate(downloadButtonConstraint)
+        NSLayoutConstraint.activate(titlePosterConstraints)
     }
     
-    func configure(with title:Title, videoID: String){
-        titleLabel.text    = title.original_title ?? title.original_name ?? "unknown"
-        titleOverview.text = title.overview ?? "Sorry, No description available for this title currently!"
-        currentTitle = title
-        guard let trailerURL = URL(string: Constants.youtubePlayerBaseURL+videoID) else {return}
-        webView.load(URLRequest(url: trailerURL))
+    private func configureTitlePreview(){
+        titleLabel.text    = currentTitle?.original_title ?? currentTitle?.original_name ?? "unknown"
+        titleOverview.text = currentTitle?.overview ?? "Sorry, No description available for this title currently!"
+       // Get youtube trailer link
+        APICaller.shared.getYoutubeTrailerIdWith(query: currentTitle?.original_title ?? currentTitle?.original_name ?? "", url: Constants.youtubeSearchBaseURL) {[weak self] results in
+            switch results {
+                
+            case .success(let videoID):
+                guard let trailerURL = URL(string: Constants.youtubePlayerBaseURL+videoID) else {return}
+                DispatchQueue.main.async {
+                    self?.webView.load(URLRequest(url: trailerURL))
+                }
+                
+            case .failure(let error):
+                print(error)
+                guard let backupURL = URL(string: Constants.backupTrailerURL) else {return}
+                self?.webView.load(URLRequest(url: backupURL))
+                
+            }
+        }
     }
     
    private func persistTitle(){

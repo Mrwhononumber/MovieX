@@ -87,19 +87,19 @@ extension UpcomingViewController: UITableViewDelegate, UITableViewDataSource {
         let selectedTitle = titles[indexPath.row]
         let previewVC = TitlePreviewViewController()
         previewVC.currentTitle = selectedTitle
-        APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitle.original_title ?? selectedTitle.original_name ?? "", url: Constants.youtubeSearchBaseURL) { results in
-            switch results {
-                
-            case .success(let trailerID):
-                DispatchQueue.main.async {
-                    previewVC.configure(with: selectedTitle, videoID: trailerID)
-                }
-                
-            case .failure(let error):
-                previewVC.configure(with: selectedTitle, videoID: "")
-                print(error)
-            }
-        }
+//        APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitle.original_title ?? selectedTitle.original_name ?? "", url: Constants.youtubeSearchBaseURL) { results in
+//            switch results {
+//
+//            case .success(let trailerID):
+//                DispatchQueue.main.async {
+//                    previewVC.configure(with: selectedTitle, videoID: trailerID)
+//                }
+//
+//            case .failure(let error):
+//                previewVC.configure(with: selectedTitle, videoID: "")
+//                print(error)
+//            }
+//        }
         navigationController?.pushViewController(previewVC, animated: true)
     }
 }

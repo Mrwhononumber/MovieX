@@ -8,7 +8,7 @@
 import UIKit
 
 protocol SearchResultsViewControllerDelegate:AnyObject{
-    func SearchResultsViewControllerDidTapTitle(title:Title, videoID:String)
+    func SearchResultsViewControllerDidTapTitle(title:Title)
 }
 
 class SearchResultsViewController: UIViewController {
@@ -71,16 +71,7 @@ extension SearchResultsViewController: UICollectionViewDelegate, UICollectionVie
         collectionView.deselectItem(at: indexPath, animated: true)
         
         let selectedTitle = titles[indexPath.row]
-        APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitle.original_name ?? selectedTitle.original_title ?? "", url: Constants.youtubeSearchBaseURL) { [weak self] results in
-            switch results {
-            case .success(let trailerID):
-                self?.delegate?.SearchResultsViewControllerDidTapTitle(title: selectedTitle, videoID: trailerID)
-                
-            case .failure(let error):
-                self?.delegate?.SearchResultsViewControllerDidTapTitle(title: selectedTitle, videoID: "")
-                print(error)
-            }
-        }
+        delegate?.SearchResultsViewControllerDidTapTitle(title: selectedTitle)
     }
 }
 

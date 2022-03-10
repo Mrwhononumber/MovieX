@@ -86,8 +86,7 @@ class HomeViewController: UIViewController {
 //MARK: -  TableView Implementation
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return sectionTitles.count
     }
@@ -200,36 +199,25 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
     }
-    
-    // Push NavBar when scrolling
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let defaultOffset = view.safeAreaInsets.top
-        let offset = scrollView.contentOffset.y + defaultOffset
-        navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
-    }
-    
-
 }
 
 //MARK: - CollectionView Cell Delegate
 
 extension HomeViewController: CollectionViewTableViewCellDelegate {
   
-    func CollectionViewTableViewCellDidGetTapped(_cell: CollectionViewTableViewCell, title: Title, videoID: String) {
-        DispatchQueue.main.async {[weak self] in
-            let previewVC = TitlePreviewViewController()
-            previewVC.configure(with: title, videoID: videoID)
-                self?.navigationController?.pushViewController(previewVC, animated: true)
-        }
+    func CollectionViewTableViewCellDidGetTapped(_cell: CollectionViewTableViewCell, title: Title) {
+        let previewVC = TitlePreviewViewController()
+        previewVC.currentTitle = title
+            navigationController?.pushViewController(previewVC, animated: true)
     }
 }
 
 //MARK: - HeroHeader Delegate
 
 extension HomeViewController: HeroHeaderUIViewDelegate {
-    func didTapTrailerButton(title: Title, videoID: String) {
+    func didTapTrailerButton(title: Title) {
         let previewVC = TitlePreviewViewController()
-        previewVC.configure(with: title, videoID: videoID)
+        previewVC.currentTitle = title
         navigationController?.pushViewController(previewVC, animated: true)
     }
 }

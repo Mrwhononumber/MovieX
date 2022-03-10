@@ -9,7 +9,7 @@ import UIKit
 
 protocol CollectionViewTableViewCellDelegate: AnyObject {
     
-    func CollectionViewTableViewCellDidGetTapped(_cell: CollectionViewTableViewCell, title: Title, videoID: String)
+    func CollectionViewTableViewCellDidGetTapped(_cell: CollectionViewTableViewCell, title: Title)
 }
 
 class CollectionViewTableViewCell: UITableViewCell {
@@ -93,22 +93,6 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let selectedTitle = titles[indexPath.row]
-        let selectedTitleName = selectedTitle.original_name ?? titles[indexPath.row].original_title ?? ""
-        
-        APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitleName+"trailer", url: Constants.youtubeSearchBaseURL) {[weak self] results in
-            switch results {
-            case .success(let videoId):
-                guard let strongSelf = self else {return}
-                DispatchQueue.main.async {
-                    self?.delegate?.CollectionViewTableViewCellDidGetTapped(_cell: strongSelf, title: selectedTitle, videoID: videoId)
-                }
-            case .failure(let error):
-                guard let strongSelf = self else {return}
-                DispatchQueue.main.async {
-                    self?.delegate?.CollectionViewTableViewCellDidGetTapped(_cell: strongSelf, title: selectedTitle, videoID: "")
-                }
-                print (error)
-            }
-        }
+        delegate?.CollectionViewTableViewCellDidGetTapped(_cell: self, title: selectedTitle)
     }
 }

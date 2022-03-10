@@ -45,6 +45,10 @@ class TitleCollectionViewCell: UICollectionViewCell {
         activityIndicatorView.center = contentView.center
     }
     
+    override func prepareForReuse() {
+        posterImageView.image = nil
+    }
+    
     //MARK: - Helper Methods
     
    private func configureUI(){

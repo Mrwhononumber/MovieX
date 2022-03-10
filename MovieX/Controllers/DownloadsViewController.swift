@@ -111,22 +111,17 @@ extension DownloadsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedStoredTitle = titles[indexPath.row]
-        let selectedTitle = Title(id: Int(selectedStoredTitle.id), media_type: selectedStoredTitle.media_type, original_name: selectedStoredTitle.original_name, original_title: selectedStoredTitle.original_title, poster_path: selectedStoredTitle.poster_path, overview: selectedStoredTitle.overview, vote_count: Int(selectedStoredTitle.vote_count), release_date: selectedStoredTitle.release_date, vote_average: selectedStoredTitle.vote_average)
+        let selectedTitle = Title(id: Int(selectedStoredTitle.id),
+                                  media_type: selectedStoredTitle.media_type,
+                                  original_name: selectedStoredTitle.original_name,
+                                  original_title: selectedStoredTitle.original_title,
+                                  poster_path: selectedStoredTitle.poster_path,
+                                  overview: selectedStoredTitle.overview,
+                                  vote_count: Int(selectedStoredTitle.vote_count),
+                                  release_date: selectedStoredTitle.release_date,
+                                  vote_average: selectedStoredTitle.vote_average)
         let previewVC = TitlePreviewViewController()
         previewVC.currentTitle = selectedTitle
-        APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitle.original_title ?? selectedTitle.original_name ?? "", url: Constants.youtubeSearchBaseURL) { results in
-            switch results {
-                
-            case .success(let trailerID):
-                DispatchQueue.main.async {
-                    previewVC.configure(with: selectedTitle, videoID: trailerID)
-                }
-                
-            case .failure(let error):
-                previewVC.configure(with: selectedTitle, videoID: "")
-                print(error)
-            }
-        }
         previewVC.downloadButtonShouldBeHidden = true
         navigationController?.pushViewController(previewVC, animated: true)
     }

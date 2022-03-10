@@ -8,8 +8,7 @@
 import UIKit
 
 protocol HeroHeaderUIViewDelegate: AnyObject {
-    func didTapTrailerButton(title:Title, videoID: String)
-    
+    func didTapTrailerButton(title:Title)
 }
 
 class HeroHeaderUIView: UIView {
@@ -116,22 +115,11 @@ class HeroHeaderUIView: UIView {
     
     private func configureButtonsActions(){
         
-        trailerButton.addTarget(self, action: #selector(trailerButtonAction), for: .touchUpInside)
+        trailerButton.addTarget(self, action: #selector(configureTrailerButtonAction), for: .touchUpInside)
     }
     
-    @objc private func trailerButtonAction(){
+    @objc private func configureTrailerButtonAction(){
         guard HeroTitle != nil else {return}
-        APICaller.shared.getYoutubeTrailerIdWith(query: HeroTitle?.original_name ?? HeroTitle?.original_title ?? "", url: Constants.youtubeSearchBaseURL) { [weak self] results  in
-            switch results {
-            case .success(let trailerID):
-                DispatchQueue.main.async {
-                    self?.delegate?.didTapTrailerButton(title: (self?.HeroTitle!)!, videoID: trailerID)
-                }
-                
-            case .failure(let error):
-                self?.delegate?.didTapTrailerButton(title: (self?.HeroTitle!)!, videoID: "")
-                print(error)
-            }
-        }
+        delegate?.didTapTrailerButton(title: HeroTitle!)
     }
 }

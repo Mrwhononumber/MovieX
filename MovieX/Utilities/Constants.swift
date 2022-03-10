@@ -21,5 +21,6 @@ struct Constants {
     static let youtubeSearchBaseURL = "https://youtube.googleapis.com/youtube/v3/search?&key=\(youtubeAPIKey)&q="
     static let youtubePlayerBaseURL = "https://youtube.com/embed/"
     static let discoverMoviesURL    = "https://api.themoviedb.org/3/discover/movie?api_key=\(APIKey)&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&with_watch_monetization_types=flatrate&page=1"
+    static let backupTrailerURL     = "https://youtube.com/embed/JJkPLYmUyzg"
 }
 

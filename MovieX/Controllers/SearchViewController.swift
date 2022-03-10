@@ -10,7 +10,7 @@ import UIKit
 class SearchViewController: UIViewController {
     
     //MARK: - Properties
- 
+    
     private var titles:[Title] = [Title]()
     
     private let discoverTable: UITableView = {
@@ -43,7 +43,7 @@ class SearchViewController: UIViewController {
     
     //MARK: - Helper methods
     
-    func configureUI(){
+   private func configureUI(){
         title = "Search"
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -53,16 +53,16 @@ class SearchViewController: UIViewController {
         view.addSubview(discoverTable)
     }
     
-    func setupDiscoverTable(){
+   private func setupDiscoverTable(){
         discoverTable.delegate = self
         discoverTable.dataSource = self
     }
     
-    func setupSearchController(){
+   private func setupSearchController(){
         searchController.searchResultsUpdater = self
     }
     
-    func fetchTitles(){
+   private func fetchTitles(){
         APICaller.shared.fetchTitleData(with: Constants.discoverMoviesURL) { [weak self] result in
             switch result{
             case .success (let discoverTitles):
@@ -108,7 +108,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
-
+    
     func updateSearchResults(for searchController: UISearchController) {
         
         let searchBar = searchController.searchBar
@@ -127,7 +127,7 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
                         resultController.titles = fetchedSearchedTitles
                         resultController.searchResultsCollectionView.reloadData()
                     }
-                   
+                    
                 case .failure(let error):
                     print (error)
                 }
@@ -140,11 +140,10 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
 
 extension SearchViewController:SearchResultsViewControllerDelegate {
     
-    
     func SearchResultsViewControllerDidTapTitle(title: Title) {
         
-            let PreviewVC = TitlePreviewViewController()
-            PreviewVC.currentTitle = title
-            navigationController?.pushViewController(PreviewVC, animated: true)
+        let PreviewVC = TitlePreviewViewController()
+        PreviewVC.currentTitle = title
+        navigationController?.pushViewController(PreviewVC, animated: true)
     }
 }

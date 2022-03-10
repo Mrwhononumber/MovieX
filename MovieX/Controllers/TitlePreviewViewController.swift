@@ -12,13 +12,11 @@ class TitlePreviewViewController: UIViewController {
     
     //MARK: - Properties
     
-    var downloadButtonShouldBeHidden = false
+    public var currentTitle:Title?
     
-   private var titleIsStored = false
+    public var downloadButtonShouldBeHidden = false
     
-     var currentTitle:Title?
-  
-    private var downloadsVC = DownloadsViewController()
+    private var titleIsStored = false
     
     private let webView: WKWebView = {
         let webView = WKWebView()
@@ -39,6 +37,7 @@ class TitlePreviewViewController: UIViewController {
         label.numberOfLines = 0
         return label
     }()
+ 
     private let titleOverview: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -46,6 +45,7 @@ class TitlePreviewViewController: UIViewController {
         label.numberOfLines = 0
         return label
     }()
+  
     private let downloadButton: UIButton = {
         let button = UIButton()
         button.setTitle("Download", for: .normal)
@@ -137,7 +137,6 @@ class TitlePreviewViewController: UIViewController {
                 print(error)
                 guard let backupURL = URL(string: Constants.backupTrailerURL) else {return}
                 self?.webView.load(URLRequest(url: backupURL))
-                
             }
         }
     }

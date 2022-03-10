@@ -15,6 +15,10 @@ class HeroHeaderUIView: UIView {
     
     //MARK: - Properties
     
+    private var HeroTitle: Title?
+    
+    weak var delegate: HeroHeaderUIViewDelegate?
+    
     private let heroImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
@@ -25,13 +29,12 @@ class HeroHeaderUIView: UIView {
     }()
     
     private let trailerButton: UIButton = {
-        
-       let button = UIButton()
-      button.setTitle("Trailer", for: .normal)
-      button.layer.borderColor = UIColor.white.cgColor
-      button.layer.borderWidth = 1
-      button.layer.cornerRadius = 5
-      button.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+        button.setTitle("Trailer", for: .normal)
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 5
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -43,10 +46,6 @@ class HeroHeaderUIView: UIView {
         myView.startAnimating()
         return myView
     }()
-    
-    weak var delegate: HeroHeaderUIViewDelegate?
-    
-    private var HeroTitle: Title?
     
     //MARK: - Init
     
@@ -70,13 +69,13 @@ class HeroHeaderUIView: UIView {
     
     //MARK: - Helper Methods
     
-    func configureUI(){
+    private func configureUI(){
         addSubview(heroImageView)
         addSubview(trailerButton)
         addSubview(activityIndicatorView)
     }
     
-    func configureHeroView(with title:Title){
+    public func configureHeroView(with title:Title){
         guard let titleURL = title.poster_path else {return}
         HeroTitle = title
         APICaller.shared.fetchTitleImage(url:Constants.imageBaseURL+titleURL) {[weak self] results in
@@ -101,8 +100,8 @@ class HeroHeaderUIView: UIView {
         heroImageView.layer.addSublayer(gradientLayer)
     }
     
-    func configureConstraints(){
-       
+    private func configureConstraints(){
+        
         let playButtonConstraints     = [
             trailerButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             trailerButton.bottomAnchor.constraint(equalTo:  bottomAnchor, constant: -50),

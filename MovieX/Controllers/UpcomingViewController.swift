@@ -34,7 +34,7 @@ class UpcomingViewController: UIViewController {
     
     //MARK: - Helper methods
     
-   private func configureUI(){
+    private func configureUI(){
         title = "Upcoming"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .always
@@ -42,13 +42,13 @@ class UpcomingViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(upcomingTable)
     }
-   
-   private func setupUpcomingTable(){
+    
+    private func setupUpcomingTable(){
         upcomingTable.delegate = self
         upcomingTable.dataSource = self
     }
     
-   private func fetchTitles(){
+    private func fetchTitles(){
         APICaller.shared.fetchTitleData(with: Constants.upcomingMoviesURL) { [weak self] result in
             switch result{
             case .success (let trending):
@@ -87,19 +87,6 @@ extension UpcomingViewController: UITableViewDelegate, UITableViewDataSource {
         let selectedTitle = titles[indexPath.row]
         let previewVC = TitlePreviewViewController()
         previewVC.currentTitle = selectedTitle
-//        APICaller.shared.getYoutubeTrailerIdWith(query: selectedTitle.original_title ?? selectedTitle.original_name ?? "", url: Constants.youtubeSearchBaseURL) { results in
-//            switch results {
-//
-//            case .success(let trailerID):
-//                DispatchQueue.main.async {
-//                    previewVC.configure(with: selectedTitle, videoID: trailerID)
-//                }
-//
-//            case .failure(let error):
-//                previewVC.configure(with: selectedTitle, videoID: "")
-//                print(error)
-//            }
-//        }
         navigationController?.pushViewController(previewVC, animated: true)
     }
 }

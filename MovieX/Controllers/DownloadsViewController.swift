@@ -78,7 +78,16 @@ extension DownloadsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = downloadsTable.dequeueReusableCell(withIdentifier: TitleTableViewCell.idintifier, for: indexPath) as? TitleTableViewCell else {return UITableViewCell()}
         let storedTitle = titles[indexPath.row]
-        let title = Title(id: Int(storedTitle.id), media_type: storedTitle.media_type, original_name: storedTitle.original_name, original_title: storedTitle.original_title, poster_path: storedTitle.poster_path, overview: storedTitle.overview, vote_count: Int(storedTitle.vote_count), release_date: storedTitle.release_date, vote_average: storedTitle.vote_average)
+        let title = Title(id: Int(storedTitle.id),
+                          media_type: storedTitle.media_type,
+                          original_name: storedTitle.original_name,
+                          original_title: storedTitle.original_title,
+                          poster_path: storedTitle.poster_path,
+                          overview: storedTitle.overview,
+                          vote_count: Int(storedTitle.vote_count),
+                          release_date: storedTitle.release_date,
+                          vote_average: storedTitle.vote_average)
+      
         cell.configure(with: title)
         return cell
     }
@@ -120,6 +129,7 @@ extension DownloadsViewController: UITableViewDelegate, UITableViewDataSource {
                                   vote_count: Int(selectedStoredTitle.vote_count),
                                   release_date: selectedStoredTitle.release_date,
                                   vote_average: selectedStoredTitle.vote_average)
+     
         let previewVC = TitlePreviewViewController()
         previewVC.currentTitle = selectedTitle
         previewVC.downloadButtonShouldBeHidden = true

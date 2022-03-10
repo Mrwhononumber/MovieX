@@ -16,15 +16,15 @@ class CollectionViewTableViewCell: UITableViewCell {
     
     
     //MARK: - Properties
-
-   static let identifier = "CollectionViewTableViewCell"
-       
-   weak var delegate: CollectionViewTableViewCellDelegate?
-   
-   private var titles:[Title] = [Title]()
+    
+    static let identifier = "CollectionViewTableViewCell"
+    
+    weak var delegate: CollectionViewTableViewCellDelegate?
+    
+    private var titles:[Title] = [Title]()
     
     private let collectionView: UICollectionView = {
-       let layout = UICollectionViewFlowLayout()
+        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 140, height: 200)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -50,20 +50,20 @@ class CollectionViewTableViewCell: UITableViewCell {
         collectionView.frame = contentView.bounds
     }
     
-//MARK: - Helper methods
-
-func configureCellTitles(with titles:[Title]){
-    DispatchQueue.main.async { [weak self] in
-        self?.titles = titles
-        self?.collectionView.reloadData()
+    //MARK: - Helper methods
+    
+    public func configureCellTitles(with titles:[Title]){
+        DispatchQueue.main.async { [weak self] in
+            self?.titles = titles
+            self?.collectionView.reloadData()
+        }
     }
-}
-    func configureUI(){
+    private func configureUI(){
         contentView.backgroundColor = .systemPink
         contentView.addSubview(collectionView)
     }
     
-    func configureCollectionView(){
+    private func configureCollectionView(){
         collectionView.delegate = self
         collectionView.dataSource = self
     }
@@ -83,8 +83,8 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
             return UICollectionViewCell()
         }
         if let posterURL = titles[indexPath.row].poster_path  {
-    
-        cell.configureImage(with: posterURL)
+            
+            cell.configureImage(with: posterURL)
         }
         return cell
         

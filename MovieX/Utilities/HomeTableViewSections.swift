@@ -10,8 +10,8 @@ import Foundation
 enum HomeTableViewSections: Int {
     
     case TrendingMovies = 0
-    case TrendingTv = 1
-    case Popular = 2
+    case TrendingTv     = 1
+    case Popular        = 2
     case UpcomingMovies = 3
-    case TopRated = 4
+    case TopRated       = 4
 }

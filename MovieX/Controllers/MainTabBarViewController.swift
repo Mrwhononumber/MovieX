@@ -11,11 +11,11 @@ class MainTabBarViewController: UITabBarController {
     
     //MARK: - Properties
     
-    let vc1 = UINavigationController(rootViewController: HomeViewController())
-    let vc2 = UINavigationController(rootViewController: UpcomingViewController())
-    let vc3 = UINavigationController(rootViewController: SearchViewController())
-    let vc4 = UINavigationController(rootViewController: DownloadsViewController())
-
+    private let vc1 = UINavigationController(rootViewController: HomeViewController())
+    private let vc2 = UINavigationController(rootViewController: UpcomingViewController())
+    private let vc3 = UINavigationController(rootViewController: SearchViewController())
+    private let vc4 = UINavigationController(rootViewController: DownloadsViewController())
+    
     //MARK: - VC Life Cicle
     
     override func viewDidLoad() {
@@ -25,7 +25,7 @@ class MainTabBarViewController: UITabBarController {
     
     //MARK: - Helper Functions
     
-   private func setupTabBarViewControllers(){
+    private func setupTabBarViewControllers(){
         vc1.tabBarItem.image = UIImage(systemName: "house")
         vc2.tabBarItem.image = UIImage(systemName: "play.circle")
         vc3.tabBarItem.image = UIImage(systemName: "magnifyingglass")

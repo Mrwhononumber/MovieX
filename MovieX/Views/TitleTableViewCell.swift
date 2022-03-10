@@ -8,11 +8,11 @@
 import UIKit
 
 class TitleTableViewCell: UITableViewCell {
-
+    
     //MARK: - Properties
     
     static let idintifier = "TitleTableViewCell"
- 
+    
     private let titleLabel:UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -20,7 +20,7 @@ class TitleTableViewCell: UITableViewCell {
         label.clipsToBounds = true
         return label
     }()
-        
+    
     private let titlePoster: UIImageView = {
         let poster = UIImageView()
         poster.translatesAutoresizingMaskIntoConstraints = false
@@ -38,7 +38,7 @@ class TitleTableViewCell: UITableViewCell {
         return myView
     }()
     
-  //MARK: - Init
+    //MARK: - Init
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -57,13 +57,13 @@ class TitleTableViewCell: UITableViewCell {
     
     //MARK: - Helper functions
     
-   private func configureUI(){
+    private func configureUI(){
         contentView.addSubview(titlePoster)
         contentView.addSubview(titleLabel)
         titlePoster.addSubview(activityIndicatorView)
     }
     
-   private func configureContraints(){
+    private func configureContraints(){
         
         let titlePosterConstraints = [
             titlePoster.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -83,7 +83,7 @@ class TitleTableViewCell: UITableViewCell {
     }
     
     
-    func configure(with title:Title) {
+    public func configure(with title:Title) {
         guard title.poster_path != nil else {return}
         let posterURL = Constants.imageBaseURL+title.poster_path!
         APICaller.shared.fetchTitleImage(url: posterURL) { [weak self] result in
@@ -97,13 +97,12 @@ class TitleTableViewCell: UITableViewCell {
                 print (error)
             }
         }
-        
         self.titleLabel.text = title.original_title ?? title.original_name ?? "unknown"
     }
     
     private func animateImageToFadeIn(source: UIView, duration: TimeInterval){
-         UIView.animate(withDuration: duration) {
-             self.titlePoster.alpha = 1
-         }
-     }
+        UIView.animate(withDuration: duration) {
+            self.titlePoster.alpha = 1
+        }
+    }
 }

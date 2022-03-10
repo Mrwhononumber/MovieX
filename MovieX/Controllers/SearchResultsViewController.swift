@@ -17,9 +17,9 @@ class SearchResultsViewController: UIViewController {
     
     weak var delegate: SearchResultsViewControllerDelegate?
     
-    var titles:[Title] = [Title]()
+    public var titles:[Title] = [Title]()
     
-    let searchResultsCollectionView: UICollectionView = {
+    public let searchResultsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: (UIScreen.main.bounds.width/3) - 14 , height: 200)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)

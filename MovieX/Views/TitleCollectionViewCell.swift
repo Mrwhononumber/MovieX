@@ -12,7 +12,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
     //MARK: - Properties
     
     static let idintifier = "TitleCollectionViewCell"
-  
+    
     private let posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -51,7 +51,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Helper Methods
     
-   private func configureUI(){
+    private func configureUI(){
         contentView.addSubview(posterImageView)
         posterImageView.addSubview(activityIndicatorView)
     }
@@ -72,7 +72,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
         }
     }
     
-   private func animateImageToFadeIn(source: UIView, duration: TimeInterval){
+    private func animateImageToFadeIn(source: UIView, duration: TimeInterval){
         UIView.animate(withDuration: duration) {
             self.posterImageView.alpha = 1
         }
